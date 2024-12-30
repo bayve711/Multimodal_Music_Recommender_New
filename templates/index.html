@@ -1,0 +1,38 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music Retrieval System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Music Retrieval System</h1>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <form action="{{ url_for('index') }}" method="POST">
+            <div class="form-group">
+                <label for="song_id">Select a Song:</label>
+                <select name="song_id" id="song_id" required>
+                    <option value="" disabled selected>-- Choose a Song --</option>
+                    {% for id, name in song_options %}
+                        <option value="{{ id }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="retrieval_method">Choose Retrieval Method:</label>
+                <select name="retrieval_method" id="retrieval_method" required>
+                    <option value="" disabled selected>-- Select Method --</option>
+                    <option value="random">Random Retrieval</option>
+                    <option value="tfidf">TF-IDF Retrieval</option>
+                </select>
+            </div>
+            <button type="submit">Retrieve Similar Tracks</button>
+        </form>
+    </div>
+</body>
+</html>

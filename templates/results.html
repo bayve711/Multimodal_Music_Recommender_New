@@ -1,0 +1,60 @@
+<!-- templates/results.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Retrieval Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Retrieval Results</h1>
+        
+        {% if selected_song %}
+            <div class="selected-song">
+                <h2>Selected Song:</h2>
+                <p><strong>Title:</strong> {{ selected_song['song'] }}</p>
+                <p><strong>Artist:</strong> {{ selected_song['artist'] }}</p>
+                <p><strong>Album:</strong> {{ selected_song['album_name'] }}</p>
+                <p><strong>Top Genre:</strong> {{ selected_song['top_genre'] }}</p>
+            </div>
+        {% endif %}
+        
+        {% if retrieved_tracks is not none and not retrieved_tracks.empty %}
+            <div class="retrieved-tracks">
+                <h2>Similar Tracks ({{ retrieval_method.capitalize() }}):</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Artist</th>
+                            <th>Album</th>
+                            <th>Similarity Score</th>
+                            <th>Play</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for track in retrieved_tracks.itertuples() %}
+                            <tr>
+                                <td>{{ track.song }}</td>
+                                <td>{{ track.artist }}</td>
+                                <td>{{ track.album_name }}</td>
+                                <td>{{ '%.4f' | format(track.similarity) }}</td>
+                                <td>
+                                    <!-- Play button or YouTube embed -->
+                                    <a href="https://www.youtube.com/results?search_query={{ track.song|urlencode }}+{{ track.artist|urlencode }}" target="_blank">🎵</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No similar tracks found.</p>
+        {% endif %}
+        
+        <a href="{{ url_for('index') }}" class="back-button">Back to Search</a>
+    </div>
+</body>
+</html>
