@@ -1,38 +1,52 @@
 <!-- templates/index.html -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Music Retrieval System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 600px; margin: auto; }
+        .error { color: red; }
+        select, button { width: 100%; padding: 10px; margin: 10px 0; }
+        .checkbox-group { display: flex; flex-direction: column; }
+        label { margin-bottom: 5px; }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Music Retrieval System</h1>
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
-        <form action="{{ url_for('index') }}" method="POST">
-            <div class="form-group">
-                <label for="song_id">Select a Song:</label>
-                <select name="song_id" id="song_id" required>
-                    <option value="" disabled selected>-- Choose a Song --</option>
-                    {% for id, name in song_options %}
-                        <option value="{{ id }}">{{ name }}</option>
+        <form method="POST">
+            <label for="song_id">Select a Song:</label>
+            <select name="song_id" id="song_id" required>
+                <option value="">-- Select a Song --</option>
+                {% for id, name in song_options %}
+                    <option value="{{ id }}">{{ name }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Select Retrieval Method(s):</label>
+            <div class="checkbox-group">
+                {% for method in ir_options %}
+                    <label>
+                        <input type="checkbox" name="ir_methods" value="{{ method }}">
+                        {{ method }}
+                    </label>
+                {% endfor %}
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <p class="{{ category }}">{{ message }}</p>
                     {% endfor %}
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="retrieval_method">Choose Retrieval Method:</label>
-                <select name="retrieval_method" id="retrieval_method" required>
-                    <option value="" disabled selected>-- Select Method --</option>
-                    <option value="random">Random Retrieval</option>
-                    <option value="tfidf">TF-IDF Retrieval</option>
-                </select>
-            </div>
-            <button type="submit">Retrieve Similar Tracks</button>
+                {% endif %}
+            {% endwith %}
+
+            <button type="submit">Retrieve Similar Songs</button>
         </form>
+
+        <a href="{{ url_for('view_history') }}">View Retrieval History</a>
     </div>
 </body>
 </html>

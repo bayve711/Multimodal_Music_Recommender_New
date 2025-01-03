@@ -1,60 +1,71 @@
 <!-- templates/results.html -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Retrieval Results</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 1200px; margin: auto; }
+        .system-section { margin-bottom: 50px; }
+        .track { display: flex; align-items: center; margin-bottom: 10px; }
+        .track-info { flex: 1; }
+        iframe { width: 200px; height: 113px; margin-left: 20px; }
+        h2 { border-bottom: 2px solid #ccc; padding-bottom: 10px; }
+        .back-link { margin-top: 20px; display: inline-block; }
+        .similarity { font-size: 0.9em; color: #555; }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Retrieval Results</h1>
-        
-        {% if selected_song %}
-            <div class="selected-song">
-                <h2>Selected Song:</h2>
-                <p><strong>Title:</strong> {{ selected_song['song'] }}</p>
-                <p><strong>Artist:</strong> {{ selected_song['artist'] }}</p>
-                <p><strong>Album:</strong> {{ selected_song['album_name'] }}</p>
-                <p><strong>Top Genre:</strong> {{ selected_song['top_genre'] }}</p>
+        <h2>Query Song:</h2>
+        <div class="track">
+            <div class="track-info">
+                <strong>{{ selected_song['song'] }}</strong> by {{ selected_song['artist'] }}
+                <p class="similarity">Genre: {{ selected_song['top_genre'] }}</p>
             </div>
-        {% endif %}
-        
-        {% if retrieved_tracks is not none and not retrieved_tracks.empty %}
-            <div class="retrieved-tracks">
-                <h2>Similar Tracks ({{ retrieval_method.capitalize() }}):</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Artist</th>
-                            <th>Album</th>
-                            <th>Similarity Score</th>
-                            <th>Play</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for track in retrieved_tracks.itertuples() %}
-                            <tr>
-                                <td>{{ track.song }}</td>
-                                <td>{{ track.artist }}</td>
-                                <td>{{ track.album_name }}</td>
-                                <td>{{ '%.4f' | format(track.similarity) }}</td>
-                                <td>
-                                    <!-- Play button or YouTube embed -->
-                                    <a href="https://www.youtube.com/results?search_query={{ track.song|urlencode }}+{{ track.artist|urlencode }}" target="_blank">🎵</a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            {% if selected_song['url'] %}
+                <iframe src="https://www.youtube.com/embed/{{ selected_song['url'].split('v=')[-1] }}" frameborder="0" allowfullscreen></iframe>
+            {% else %}
+                <p>No video available.</p>
+            {% endif %}
+        </div>
+
+        {% for method, tracks in retrieval_results.items() %}
+            <div class="system-section">
+                <h2>{{ method }}</h2>
+                {% if tracks %}
+                    {% for track in tracks %}
+                        <div class="track">
+                            <div class="track-info">
+                                <strong>{{ track['song'] }}</strong> by {{ track['artist'] }}
+                                <p class="similarity">
+                                    {% if 'similarity_score' in track %}
+                                        Similarity Score: {{ "{:.4f}".format(track['similarity_score']) }}
+                                    {% elif 'aggregated_similarity_score' in track %}
+                                        Aggregated Similarity Score: {{ "{:.4f}".format(track['aggregated_similarity_score']) }}
+                                    {% elif 'distance' in track %}
+                                        Distance: {{ "{:.4f}".format(track['distance']) }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </p>
+                            </div>
+                            {% if track['url'] %}
+                                <iframe src="https://www.youtube.com/embed/{{ track['url'].split('v=')[-1] }}" frameborder="0" allowfullscreen></iframe>
+                            {% else %}
+                                <p>No video available.</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No tracks retrieved.</p>
+                {% endif %}
             </div>
-        {% else %}
-            <p>No similar tracks found.</p>
-        {% endif %}
-        
-        <a href="{{ url_for('index') }}" class="back-button">Back to Search</a>
+        {% endfor %}
+
+        <a href="{{ url_for('index') }}" class="back-link">← Back to Home</a>
     </div>
 </body>
 </html>
