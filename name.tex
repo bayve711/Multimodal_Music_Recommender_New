@@ -4,50 +4,78 @@
 \setcopyright{none}
 
 % DOI
-\acmDOI{10.475/123_4}
+\acmDOI{12.345/678_9}
 
 % ISBN
-\acmISBN{123-4567-24-567/08/06}
+\acmISBN{123-4567-89-101/11/21}
 
 % Conference
-\acmConference[MMRS '25]{Proceedings of the 2025 International Conference on Multimedia Search and Retrieval}{January 01--03, 2025}{City, Country}
+\acmConference[MMSR WS24/25]{}{January 01--08, 2025}{Linz, Austria}
 \acmYear{2025}
 \copyrightyear{2025}
 
-\acmPrice{15.00}
+\usepackage{placeins}
+\usepackage{adjustbox}
+\usepackage{caption}
+\usepackage{pdflscape}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{geometry}
+\usepackage{tabularx}
+\usepackage[utf8]{inputenc}
+\geometry{a4paper, margin=1in}
+\usepackage{lscape}
+\usepackage{array}
+\usepackage{needspace}
 
-\usepackage{booktabs} % For formal tables
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
 
 \begin{document}
 
-\title{Multimodal Music Retrieval System Leveraging the Music4All-Onion Dataset}
+\title{KV Multimedia Search and Retrieval. Group C Report.}
 
-\author{First Author}
+\author{Maxim Kalpin}
 \affiliation{%
-  \institution{University Name}
-  \streetaddress{1234 University Ave}
-  \city{City}
-  \state{State}
-  \country{Country}
-  \postcode{12345}
+  \institution{Johannes Kepler University Linz}
+  \country{ }
 }
-\email{first.author@university.edu}
+\email{k12140222@students.jku.at}
 
-\author{Second Author}
+\author{Daniil Krechko}
 \affiliation{%
-  \institution{University Name}
-  \streetaddress{1234 University Ave}
-  \city{City}
-  \state{State}
-  \country{Country}
-  \postcode{12345}
+  \institution{Johannes Kepler University Linz}
+  \country{ }
 }
-\email{second.author@university.edu}
+\email{k12149099@students.jku.at}
 
-\renewcommand{\shortauthors}{First Author et al.}
+\author{Anastasia Ignatiuc}
+\affiliation{%
+  \institution{Johannes Kepler University Linz}
+  \country{ }
+}
+\email{k12137168@students.jku.at}
+
+\author{Ilia Stepanov}
+\affiliation{%
+  \institution{Johannes Kepler University Linz}
+  \country{ }
+}
+\email{k12226374@students.jku.at}
+
+\author{Artur Garipov}
+\affiliation{%
+  \institution{Johannes Kepler University Linz}
+  \country{ }
+}
+\email{k12146699@students.jku.at}
+
+\renewcommand{\shortauthors}{Kalpin et al.}
 
 \begin{abstract}
-The exponential growth of multimedia data necessitates advanced search and retrieval systems capable of effectively handling diverse data modalities. This report presents the development of a multimodal music retrieval system utilizing the Music4All-Onion dataset. The system emphasizes content-driven retrieval by integrating textual, audio, and visual features to enhance retrieval accuracy and user experience. Through comprehensive experimental setups and evaluations, the proposed approach demonstrates superior performance in retrieving semantically relevant music tracks. Additionally, the system addresses beyond-accuracy metrics such as coverage, diversity, and popularity to ensure a balanced and user-centric retrieval process. The findings highlight the potential of multimodal integration in advancing music information retrieval systems.
+The exponential growth of multimedia data necessitates advanced search and retrieval systems capable of effectively handling diverse data modalities. This report presents the development of a multimodal music retrieval system utilizing the Music4All-Onion dataset. The system emphasizes content-driven retrieval by integrating textual, audio, and visual features to enhance retrieval accuracy and user experience. Through comprehensive experimental setups and evaluations, the proposed approach demonstrates superior performance compared to baseline retrieval systems in retrieving semantically relevant music tracks. Additionally, the system addresses beyond-accuracy metrics such as coverage, diversity, and popularity to ensure a balanced and user-centric retrieval process. The findings highlight the potential of multimodal integration in advancing music information retrieval systems.
 \end{abstract}
 
 \maketitle
@@ -55,142 +83,239 @@ The exponential growth of multimedia data necessitates advanced search and retri
 \section{Introduction}
 \label{sec:introduction}
 
-In the digital age, the proliferation of multimedia content has transformed the landscape of information retrieval, necessitating sophisticated systems capable of handling diverse data modalities. Music, as a multifaceted medium, encompasses not only auditory elements but also textual metadata and visual representations, such as album artwork and music videos. Traditional music retrieval systems predominantly rely on textual metadata or audio features in isolation, limiting their effectiveness in capturing the nuanced relationships between different modalities.
+In the era of digital information, the volume of multimedia data has surged exponentially, presenting both opportunities and challenges in the realm of information retrieval. Music, as a pervasive form of multimedia, not only serves as a primary medium for artistic expression but also as a significant component of digital libraries and streaming platforms. Effective retrieval of music information is paramount for enhancing user experience, facilitating discovery, and supporting various applications such as recommendation systems, music analysis, and content management.
 
-The advent of multimodal retrieval systems aims to bridge this gap by integrating various data types to provide more comprehensive and accurate search results. By leveraging multiple modalities, such systems can better understand the context and semantics of music tracks, leading to improved retrieval performance and a richer user experience. The integration of textual features, such as lyrics and artist information, with audio features like Mel-frequency cepstral coefficients (MFCC) and spectral contrast, enables a more holistic representation of music content.
+Traditional music retrieval systems have predominantly relied on metadata-based approaches, utilizing information such as song titles, artists, genres, and user-generated tags to facilitate search and discovery. While these methods offer a foundational framework, they often fall short in capturing the nuanced and multifaceted nature of music content. The subjective perception of music, characterized by its auditory, lyrical, and visual elements, demands more sophisticated retrieval mechanisms that transcend mere textual metadata.
 
-This report focuses on the development of a multimodal music retrieval system using the Music4All-Onion dataset, which encompasses a wide array of features across textual, audio, and visual domains. The primary objective is to enhance content-driven retrieval by effectively combining these modalities to improve the accuracy and relevance of search results. The system is designed to address both accuracy metrics and beyond-accuracy criteria, including coverage, diversity, and popularity, ensuring a balanced retrieval process that caters to diverse user preferences.
+To address these limitations, recent advancements have focused on content-driven retrieval systems that leverage multimodal data integration. By incorporating diverse data modalities—such as audio features, lyrics, and visual representations—these systems aim to provide a more holistic and semantically rich retrieval experience. The integration of multimodal data not only enhances the accuracy of retrieval but also enriches the diversity and coverage of the results, aligning more closely with user intent and preferences.
 
-The methodology involves constructing individual retrieval systems based on distinct modalities and subsequently exploring fusion techniques to amalgamate their strengths. Baseline systems employing random retrieval and text-based similarity provide a reference point for evaluating the performance gains achieved through multimodal integration. Comprehensive evaluations are conducted to assess the system's effectiveness across various metrics, providing insights into the trade-offs and synergies inherent in multimodal retrieval approaches.
+This report delineates the development of a multimodal music retrieval system using the Music4All-Onion dataset. The primary objective of the project is to design and implement a system that amalgamates textual, audio, and visual features to enable robust and content-aware music retrieval. The system is structured to perform content-driven retrieval by evaluating and integrating various feature representations, thereby optimizing for both accuracy and beyond-accuracy metrics such as coverage, diversity, and popularity.
 
-The subsequent sections of this report detail the experimental setup, including data preprocessing and feature integration, the design and implementation of retrieval algorithms, and the evaluation framework employed to measure system performance. The analysis of results underscores the advantages of multimodal integration in music retrieval and offers guidance for future enhancements in this domain.
+The methodology encompasses the creation of baseline retrieval systems, the incorporation of additional modalities beyond text-based features, and the exploration of fusion techniques to amalgamate different retrieval strategies. Experimental setups are meticulously designed to evaluate the performance of each retrieval system using standard accuracy metrics alongside novel beyond-accuracy metrics. The findings from these evaluations underscore the efficacy of multimodal integration in enhancing retrieval performance and offer insights into the trade-offs between different system objectives.
+
+In summary, this report contributes to the field of music information retrieval by presenting a comprehensive approach to developing a multimodal retrieval system. The integration of diverse data modalities, coupled with a rigorous evaluation framework, demonstrates the potential of content-driven retrieval systems in delivering more accurate, diverse, and user-aligned music retrieval outcomes.
 
 \section{Methodology}
 \label{sec:methodology}
 
-The development of the multimodal music retrieval system involves several critical steps, including data preprocessing, feature extraction and integration, design of retrieval algorithms, and the implementation of fusion techniques. This section delineates the methodologies employed to achieve content-driven retrieval by leveraging multiple data modalities present in the Music4All-Onion dataset.
+The development of the multimodal music retrieval system is structured around a comprehensive methodology that encompasses data preprocessing, feature extraction and integration, the design of diverse retrieval algorithms, the application of fusion techniques, and a robust evaluation framework. This section details the systematic approaches employed to leverage the multifaceted data modalities within the Music4All-Onion dataset, aiming to facilitate effective content-driven music retrieval.
 
 \subsection{Data Preprocessing}
 \label{subsec:data_preprocessing}
 
-Effective data preprocessing is foundational to ensuring the quality and reliability of the retrieval system. The Music4All-Onion dataset comprises diverse data types, including textual metadata, audio features, visual features, and user-generated tags. The preprocessing pipeline encompasses data cleaning, merging, and normalization to prepare the dataset for subsequent feature extraction and integration.
+Data preprocessing is a pivotal step to ensure the quality and consistency of the dataset, which directly impacts the performance of the retrieval system. The Music4All-Onion dataset comprises various data types, including textual metadata, audio features, visual features, and user-generated tags. The preprocessing pipeline involves data cleaning, merging, normalization, and filtering to construct a unified and reliable dataset.
 
 \subsubsection{Data Cleaning and Merging}
 
-The dataset was initially segmented into multiple TSV (Tab-Separated Values) files, each containing different aspects of the music tracks. The primary steps in data cleaning involved:
+The dataset is initially segmented into multiple TSV (Tab-Separated Values) files, each containing different aspects of the music tracks. The primary steps in data cleaning and merging include:
 
 \begin{itemize}
-    \item **Parsing and Standardizing Genres**: The \texttt{genre} field, originally a comma-separated string, was converted into a list format to facilitate easier manipulation and analysis. The top genre for each track was extracted to serve as the primary relevance criterion in retrieval evaluations.
-    \item **Tag Extraction**: User-generated tags were parsed from dictionary strings into list structures.
+    \item \textbf{Parsing and Standardizing Genres}: The \texttt{genre} field, originally presented as a comma-separated string, is converted into a list format. This standardization facilitates easier manipulation and analysis. The top genre for each track is extracted to serve as the primary relevance criterion in retrieval evaluations.
+    
+    \item \textbf{Tag Extraction and Filtering}: User-generated tags are parsed from dictionary strings into list structures. Genre-specific tags are excluded to focus on descriptive and thematic tags. Additionally, tags with weights below a predefined threshold are filtered out to retain only significant tags.
+    
+    \item \textbf{Handling Missing Values}: Tracks with missing critical information, such as \texttt{popularity} scores, are identified and excluded to maintain data consistency. Specifically, tracks lacking \texttt{popularity} metrics are removed from the catalog to ensure the reliability of popularity-based evaluation metrics.
 \end{itemize}
 
-Subsequent merging operations combined the various data sources into a unified \texttt{catalog\_df} DataFrame. This consolidation included integrating metadata, genres, tags, and all feature vectors, resulting in a comprehensive representation of each music track.
+Subsequent merging operations integrate the cleaned datasets into a unified \texttt{catalog\_df} DataFrame. This consolidation encompasses metadata, genres, tags, and all feature vectors, resulting in a comprehensive representation of each music track.
 
 \subsubsection{Feature Normalization}
 
-To ensure comparability across different feature types and scales, feature vectors were normalized using the L2 norm. This normalization step is crucial for similarity computations, particularly when employing distance-based metrics such as cosine similarity.
+To ensure comparability across different feature types and scales, feature vectors undergo normalization using the L2 norm. This normalization step is crucial for similarity computations, particularly when employing distance-based metrics such as cosine similarity. Mathematically, the L2 normalization of a feature vector \( \mathbf{f} \) is defined as:
+\[
+\mathbf{f}_{\text{normalized}} = \frac{\mathbf{f}}{\|\mathbf{f}\|_2}
+\]
+where \( \|\mathbf{f}\|_2 \) denotes the Euclidean norm of \( \mathbf{f} \).
 
 \subsection{Feature Extraction and Integration}
 \label{subsec:feature_extraction_integration}
 
-The retrieval system leverages multiple feature modalities extracted from the dataset. Each modality contributes unique information, enhancing the system's ability to capture the multifaceted nature of music tracks.
+The retrieval system leverages multiple feature modalities extracted from the dataset, each contributing unique information to capture the multifaceted nature of music tracks. This section details the extraction and integration of textual, audio, visual, and tag features, providing a summary of the feature extraction processes carried out as part of the Music4All-Onion dataset development, detailing how various feature representations were derived from the raw data.
+
 
 \subsubsection{Textual Features}
 
 \begin{itemize}
-    \item \textbf{TF-IDF Representations}: Lyrics were vectorized using Term Frequency-Inverse Document Frequency (TF-IDF) to quantify the importance of words within each song relative to the entire corpus. Formally, the TF-IDF weight for term \( t \) in document \( d \) is given by:
-    \[
-    \text{TF-IDF}(t, d) = \text{TF}(t, d) \times \log\left(\frac{N}{\text{DF}(t)}\right)
-    \]
-    where \( \text{TF}(t, d) \) is the term frequency of \( t \) in \( d \), \( N \) is the total number of documents, and \( \text{DF}(t) \) is the document frequency of \( t \).
-
-    \item \textbf{BERT Embeddings}: Lyrics were further processed using Bidirectional Encoder Representations from Transformers (BERT) to capture contextual semantic information. The BERT embeddings provide a dense vector representation that encapsulates the nuances of language within the lyrics.
+    \item \textbf{BERT Embeddings}: Lyrics are processed using Bidirectional Encoder Representations from Transformers (BERT) to capture contextual semantic information. BERT embeddings provide dense vector representations that encapsulate the nuances of language within the lyrics, enabling the retrieval system to understand deeper semantic relationships.
 \end{itemize}
 
 \subsubsection{Audio Features}
 
 \begin{itemize}
-    \item \textbf{Mel-Frequency Cepstral Coefficients (MFCC)}: MFCCs were extracted to represent the short-term power spectrum of audio signals. These coefficients are widely used in audio processing for tasks such as speech and music recognition.
+    \item \textbf{Mel-Frequency Cepstral Coefficients (MFCC)}: MFCCs are extracted to represent the short-term power spectrum of audio signals. These coefficients are widely used in audio processing for tasks such as speech and music recognition due to their effectiveness in capturing the timbral characteristics of audio.
     
-    \item \textbf{Spectral Contrast}: This feature captures the difference in amplitude between peaks and valleys in the spectral envelope, providing insights into the timbral texture of the audio.
+    \item \textbf{Spectral Contrast}: This feature captures the difference in amplitude between peaks and valleys in the spectral envelope, providing insights into the timbral texture of the audio. Spectral contrast is instrumental in distinguishing between different musical genres and styles.
 \end{itemize}
 
 \subsubsection{Visual Features}
 
 \begin{itemize}
-    \item \textbf{VGG19 and ResNet Embeddings}: Visual features were extracted from album artwork using deep convolutional neural networks, specifically VGG19 and ResNet architectures. These embeddings capture high-level visual patterns and aesthetics that can be indicative of the music genre or mood.
+    \item \textbf{VGG19 and ResNet Embeddings}: Visual features are extracted from YouTube videoclips associated with each track using deep convolutional neural networks, specifically VGG19 and ResNet architectures. These embeddings capture high-level visual patterns and aesthetics from the videoclips, which can be indicative of the music genre or mood, thereby enhancing the retrieval system's ability to associate visual cues with musical content.
+ These embeddings capture high-level visual patterns and aesthetics, which can be indicative of the music genre or mood, thereby enhancing the retrieval system's ability to associate visual cues with musical content.
 \end{itemize}
 
 \subsubsection{Tag Features}
 
 \begin{itemize}
-    \item \textbf{Tag Vectorization}: User-generated tags were vectorized using a binary occurrence matrix, where each tag corresponds to a unique dimension. The resulting tag matrix was normalized to ensure uniformity across different tag frequencies.
+    \item \textbf{Tag Vectorization}: User-generated tags are vectorized using both Term Frequency-Inverse Document Frequency (TF-IDF) and binary encoding. The TF-IDF vectorization quantifies the importance of tags within each song relative to the entire corpus, while binary encoding captures the presence or absence of tags. These vectorizations facilitate the computation of similarity based on semantic relevance derived from user-generated descriptors.
 \end{itemize}
 
 \subsubsection{Feature Integration}
 
-Each feature modality was processed and stored as separate matrices. For fusion techniques, feature matrices were combined either at the early stage (early fusion) by concatenating feature vectors or at the late stage (late fusion) by aggregating similarity scores derived from individual retrieval systems.
+Each feature modality is processed and stored as separate matrices to maintain modularity and facilitate independent analysis. For fusion techniques, feature matrices are combined either at the early stage (early fusion) by concatenating feature vectors or at the late stage (late fusion) by aggregating similarity scores derived from individual retrieval systems.
 
 \subsection{Retrieval Systems}
 \label{subsec:retrieval_systems}
 
-The retrieval system comprises multiple retrieval approaches, each leveraging different feature modalities. These systems range from simple baselines to sophisticated multimodal retrieval methods.
+The retrieval system comprises multiple retrieval approaches, each leveraging different feature modalities. These systems range from simple baselines to sophisticated multimodal retrieval methods, enabling a comprehensive evaluation of various retrieval strategies.
 
 \subsubsection{Baseline Retrieval}
 
 \paragraph{Random Retrieval}
-The baseline system randomly selects \( N \) tracks from the catalog, excluding the query track. This method serves as a reference point to evaluate the performance improvements introduced by more advanced retrieval techniques.
+The baseline system randomly selects \( N \) tracks from the catalog, excluding the query track. This method serves as a reference point to evaluate the performance improvements introduced by more advanced retrieval techniques. Mathematically, for a query track \( q \), the retrieved set \( R(q) \) is:
+\[
+R(q) = \text{RandomSample}(\text{Catalog} \setminus \{q\}, N)
+\]
+where \( \text{RandomSample} \) denotes the random selection process.
 
 \subsubsection{Text-Based Retrieval}
 
 \paragraph{TF-IDF Retrieval}
-Utilizing the TF-IDF representations of lyrics, this retrieval system computes cosine similarity between the query track and all other tracks to rank and retrieve the top \( N \) similar tracks. The similarity score between two tracks \( d_i \) and \( d_j \) is defined as:
+Utilizing the TF-IDF representations of user-generated tags, this retrieval system computes cosine similarity between the query track and all other tracks to rank and retrieve the top \( N \) similar tracks. The similarity score between two tracks \( d_i \) and \( d_j \) is defined as:
 \[
 \text{Similarity}(d_i, d_j) = \frac{\mathbf{TFIDF}_{d_i} \cdot \mathbf{TFIDF}_{d_j}}{\|\mathbf{TFIDF}_{d_i}\|_2 \times \|\mathbf{TFIDF}_{d_j}\|_2}
 \]
+where \( \mathbf{TFIDF}_{d_i} \) and \( \mathbf{TFIDF}_{d_j} \) are the TF-IDF vectors for tags of tracks \( d_i \) and \( d_j \), respectively.
 
 \subsubsection{Multimodal Retrieval Systems}
 
 \paragraph{BERT Retrieval}
-This system employs BERT embeddings of lyrics to compute cosine similarity, similar to the TF-IDF approach but capturing deeper semantic relationships.
+This system employs BERT embeddings of lyrics to compute cosine similarity, capturing deeper semantic relationships compared to traditional TF-IDF approaches. The similarity score is computed as:
+\[
+\text{Similarity}(d_i, d_j) = \frac{\mathbf{BERT}_{d_i} \cdot \mathbf{BERT}_{d_j}}{\|\mathbf{BERT}_{d_i}\|_2 \times \|\mathbf{BERT}_{d_j}\|_2}
+\]
+where \( \mathbf{BERT}_{d_i} \) and \( \mathbf{BERT}_{d_j} \) are the BERT embedding vectors for tracks \( d_i \) and \( d_j \), respectively.
 
 \paragraph{MFCC Retrieval}
-Using MFCC feature vectors, this system calculates Euclidean distances to identify the closest audio matches to the query track.
+Using MFCC feature vectors, this system calculates Euclidean distances to identify the closest audio matches to the query track. The distance between two tracks \( d_i \) and \( d_j \) is given by:
+\[
+\text{Distance}(d_i, d_j) = \|\mathbf{MFCC}_{d_i} - \mathbf{MFCC}_{d_j}\|_2
+\]
+where \( \mathbf{MFCC}_{d_i} \) and \( \mathbf{MFCC}_{d_j} \) are the MFCC vectors for tracks \( d_i \) and \( d_j \), respectively.
 
 \paragraph{Spectral Contrast Retrieval}
-Spectral contrast features are utilized to compute cosine similarity, highlighting tracks with similar timbral textures.
+Spectral contrast features are utilized to compute cosine similarity, highlighting tracks with similar timbral textures. The similarity score is defined as:
+\[
+\text{Similarity}(d_i, d_j) = \frac{\mathbf{Spectral}_{d_i} \cdot \mathbf{Spectral}_{d_j}}{\|\mathbf{Spectral}_{d_i}\|_2 \times \|\mathbf{Spectral}_{d_j}\|_2}
+\]
+where \( \mathbf{Spectral}_{d_i} \) and \( \mathbf{Spectral}_{d_j} \) are the spectral contrast vectors for tracks \( d_i \) and \( d_j \), respectively.
 
 \paragraph{VGG19 and ResNet Retrieval}
-Visual embeddings from VGG19 and ResNet models are used to compute cosine similarity, retrieving tracks with visually similar album artwork.
+Visual embeddings from VGG19 and ResNet models are used to compute cosine similarity, retrieving tracks with visually similar album artwork. The similarity score is calculated as:
+\[
+\text{Similarity}(d_i, d_j) = \frac{\mathbf{VGG19}_{d_i} \cdot \mathbf{VGG19}_{d_j}}{\|\mathbf{VGG19}_{d_i}\|_2 \times \|\mathbf{VGG19}_{d_j}\|_2}
+\]
+\[
+\text{Similarity}(d_i, d_j) = \frac{\mathbf{ResNet}_{d_i} \cdot \mathbf{ResNet}_{d_j}}{\|\mathbf{ResNet}_{d_i}\|_2 \times \|\mathbf{ResNet}_{d_j}\|_2}
+\]
+where \( \mathbf{VGG19}_{d_i} \) and \( \mathbf{VGG19}_{d_j} \) are the VGG19 feature vectors, and \( \mathbf{ResNet}_{d_i} \) and \( \mathbf{ResNet}_{d_j} \) are the ResNet feature vectors for tracks \( d_i \) and \( d_j \), respectively.
 
 \paragraph{Tag-Based Retrieval}
-This system leverages the tag matrix to compute cosine similarity based on user-generated tags, emphasizing semantic relevance derived from tag information.
+This system leverages the binary tag matrix to compute cosine similarity based on user-generated tags, emphasizing semantic relevance derived from descriptive tags. The similarity score is computed as:
+\[
+\text{Similarity}(d_i, d_j) = \frac{\mathbf{Tag}_{d_i} \cdot \mathbf{Tag}_{d_j}}{\|\mathbf{Tag}_{d_i}\|_2 \times \|\mathbf{Tag}_{d_j}\|_2}
+\]
+where \( \mathbf{Tag}_{d_i} \) and \( \mathbf{Tag}_{d_j} \) are the binary tag vectors for tracks \( d_i \) and \( d_j \), respectively.
 
 \subsection{Fusion Techniques}
 \label{subsec:fusion_techniques}
 
-To harness the strengths of individual retrieval systems, fusion techniques are employed to integrate multiple modalities, enhancing overall retrieval performance.
+To harness the strengths of individual retrieval systems, fusion techniques are employed to integrate multiple modalities, thereby enhancing overall retrieval performance. The two primary fusion strategies utilized are early fusion and late fusion.
 
 \subsubsection{Early Fusion}
 
-Early fusion involves concatenating feature vectors from different modalities into a single, unified feature vector before similarity computation. Mathematically, the combined feature vector \( \mathbf{f}_{\text{combined}} \) for a track is:
+Early fusion involves concatenating feature vectors from different modalities into a single, unified feature vector before similarity computation. In our approach, BERT embeddings and MFCC features are combined to form a comprehensive feature representation for each track. Mathematically, the combined feature vector \( \mathbf{f}_{\text{combined}} \) for a track is:
 \[
-\mathbf{f}_{\text{combined}} = [\mathbf{f}_{\text{TF-IDF}}; \mathbf{f}_{\text{BERT}}]
+\mathbf{f}_{\text{combined}} = [\mathbf{f}_{\text{BERT}}; \mathbf{f}_{\text{MFCC}}]
 \]
-where \( \mathbf{f}_{\text{TF-IDF}} \) and \( \mathbf{f}_{\text{BERT}} \) are the TF-IDF and BERT feature vectors, respectively. Cosine similarity is then computed on these combined vectors to retrieve similar tracks.
+where \( \mathbf{f}_{\text{BERT}} \) and \( \mathbf{f}_{\text{MFCC}} \) are the BERT and MFCC feature vectors, respectively. Cosine similarity is then computed on these combined vectors to retrieve similar tracks, leveraging the complementary information from both textual and audio modalities.
 
 \subsubsection{Late Fusion}
 
-Late fusion aggregates similarity scores from different retrieval systems to compute an overall similarity score. Given two similarity scores \( s_1 \) and \( s_2 \) from different modalities, the aggregated similarity \( s_{\text{agg}} \) is:
+Late fusion aggregates similarity scores from different retrieval systems to compute an overall similarity score. Specifically, the system combines similarity scores from the MFCC Retrieval and VGG19 Retrieval systems using a weighted sum. Given two similarity scores \( s_1 \) and \( s_2 \) from MFCC and VGG19 retrievals, respectively, the aggregated similarity \( s_{\text{agg}} \) is:
 \[
 s_{\text{agg}} = \alpha s_1 + \beta s_2
 \]
-where \( \alpha \) and \( \beta \) are weights assigned to each modality, reflecting their relative importance. The final ranking is based on the aggregated similarity scores.
+where \( \alpha \) and \( \beta \) are weights assigned to each modality, reflecting their relative importance. In our implementation, \( \alpha \) is set to 0.5, and \( \beta = 1 - \alpha \). The final ranking is based on the aggregated similarity scores, allowing the system to balance the contributions of audio and visual modalities effectively.
+
+\subsection{Retrieval Algorithms}
+\label{subsec:retrieval_algorithms}
+
+Each retrieval algorithm is encapsulated within a dedicated function, adhering to a consistent interface that accepts a query track ID and returns a ranked list of similar tracks based on the respective similarity measures. This modular design facilitates seamless integration and evaluation within the overall system architecture.
+
+\subsubsection{Random Retrieval}
+As described in the baseline retrieval, the Random Retrieval algorithm serves as a benchmark, providing a reference point for evaluating the efficacy of more sophisticated retrieval techniques. Since this method selects tracks randomly, it does not utilize any similarity measure.
+
+\subsubsection{TF-IDF Retrieval}
+Leveraging TF-IDF representations of user-generated tags, this algorithm computes cosine similarity to rank tracks based on semantic relevance derived from tag information.
+
+\paragraph{Rationale for Cosine Similarity}
+Cosine similarity is chosen for TF-IDF Retrieval because it effectively measures the orientation between high-dimensional sparse vectors, which is characteristic of TF-IDF tag representations. Since TF-IDF vectors are normalized and sparse, cosine similarity is well-suited to capture the semantic similarity between tracks based on their tag distributions, regardless of the magnitude of the vectors. This focus on angular similarity ensures that tracks with similar tag patterns are ranked closely, enhancing the retrieval of semantically relevant tracks.
+
+\subsubsection{BERT Retrieval}
+Utilizing BERT embeddings, this algorithm captures deeper semantic relationships within the lyrics, enhancing the retrieval of contextually relevant tracks through cosine similarity.
+
+\paragraph{Rationale for Cosine Similarity}
+BERT embeddings produce dense, high-dimensional vectors that encapsulate rich semantic information from lyrics. Cosine similarity is ideal for these embeddings as it measures the cosine of the angle between two vectors, effectively assessing their directional alignment in the embedding space. This measure is particularly effective for dense representations where the magnitude of the vectors is less important than their direction, allowing the system to identify tracks with similar lyrical semantics.
+
+\subsubsection{MFCC Retrieval}
+By calculating Euclidean distances between MFCC feature vectors, this algorithm identifies tracks with similar audio characteristics, emphasizing timbral and rhythmic similarities.
+
+\paragraph{Rationale for Euclidean Distance}
+Mel-Frequency Cepstral Coefficients (MFCC) are designed to capture the timbral aspects of audio signals, resulting in feature vectors that represent the short-term power spectrum of sound. Euclidean distance is chosen for MFCC Retrieval because it quantifies the absolute differences between feature vectors, making it effective for capturing the precise acoustic similarities and dissimilarities between tracks. Since MFCC vectors are typically dense and represent continuous audio features, Euclidean distance provides a straightforward and intuitive measure of similarity based on the actual feature values.
+
+\subsubsection{Spectral Contrast Retrieval}
+This algorithm computes cosine similarity based on spectral contrast features, targeting the retrieval of tracks with similar timbral textures.
+
+\paragraph{Rationale for Cosine Similarity}
+Spectral contrast features capture the differences in amplitude between peaks and valleys in the spectral envelope, providing insights into the timbral texture of audio. These features result in high-dimensional vectors where the direction of the vector is more indicative of similarity than its magnitude. Cosine similarity is thus appropriate as it assesses the angular similarity between spectral contrast vectors, ensuring that tracks with similar timbral textures are identified and ranked closely, irrespective of the overall energy levels.
+
+\subsubsection{VGG19 and ResNet Retrieval}
+Using visual embeddings from VGG19 and ResNet models, these algorithms retrieve tracks with visually similar YouTube videoclips, incorporating aesthetic dimensions into the retrieval process through cosine similarity.
+
+\paragraph{Rationale for Cosine Similarity}
+Visual embeddings extracted from deep convolutional neural networks like VGG19 and ResNet produce dense, high-dimensional vectors that encode complex visual patterns and aesthetics from YouTube videoclips. Cosine similarity is chosen because it effectively measures the similarity in the direction of these dense vectors, making it suitable for capturing nuanced visual similarities without being affected by the magnitude of the embeddings. This ensures that tracks with visually similar content are accurately identified, enhancing the multimodal retrieval capabilities.
+
+\subsubsection{Tag-Based Retrieval}
+Employing the binary tag matrix, this algorithm computes cosine similarity based on user-generated tags, emphasizing semantic relevance derived from descriptive tags.
+
+\paragraph{Rationale for Cosine Similarity}
+The binary tag matrix represents the presence or absence of specific tags for each track, resulting in high-dimensional sparse vectors. Cosine similarity is ideal for such representations as it effectively measures the angular similarity between sparse vectors, focusing on the overlap of tags irrespective of the vector magnitudes. This makes it well-suited for identifying tracks that share similar descriptive tags, ensuring that semantically relevant tracks are retrieved.
+
+
+\subsection{Fusion Techniques}
+\label{subsec:fusion_techniques}
+
+To harness the strengths of individual retrieval systems, fusion techniques are employed to integrate multiple modalities, thereby enhancing overall retrieval performance.
+
+\subsubsection{Early Fusion}
+
+Early fusion involves concatenating feature vectors from different modalities into a single, unified feature vector before similarity computation. In our approach, BERT embeddings and MFCC features are combined to form a comprehensive feature representation for each track. The combined feature vector \( \mathbf{f}_{\text{combined}} \) is then used to compute cosine similarity, facilitating the retrieval of tracks that are semantically and audibly similar to the query.
+
+\subsubsection{Late Fusion}
+
+Late fusion aggregates similarity scores from different retrieval systems to compute an overall similarity score. Specifically, the system combines similarity scores from the MFCC Retrieval and VGG19 Retrieval systems using a weighted sum. Given two similarity scores \( s_1 \) and \( s_2 \) from MFCC and VGG19 retrievals, respectively, the aggregated similarity \( s_{\text{agg}} \) is:
+\[
+s_{\text{agg}} = \alpha s_1 + \beta s_2
+\]
+where \( \alpha \) and \( \beta \) are weights assigned to each modality, reflecting their relative importance. In our implementation, \( \alpha \) is set to 0.5, and \( \beta = 1 - \alpha \). These weights were initially chosen to balance the contributions of audio and visual modalities equally. Subsequent parameter tuning was conducted using a grid search approach, evaluating combinations of \( \alpha \) and \( \beta \) to maximize retrieval performance based on Precision@10 and NDCG@10 metrics. The selected weights demonstrated the best performance, ensuring an optimal balance between the modalities.
+
 
 \subsection{Evaluation Metrics}
 \label{subsec:evaluation_metrics}
 
-The retrieval systems are evaluated using a combination of accuracy and beyond-accuracy metrics to assess both the relevance and quality of the retrieved results.
+The retrieval systems are evaluated using a combination of accuracy and beyond-accuracy metrics to assess both the relevance and quality of the retrieved results. This dual-faceted evaluation ensures a comprehensive understanding of system performance from multiple perspectives. All metrics, except for Coverage@10, are computed for each query individually and then averaged across all queries to obtain a comprehensive performance overview.
+
 
 \subsubsection{Accuracy Metrics}
 
@@ -229,18 +354,14 @@ The retrieval systems are evaluated using a combination of accuracy and beyond-a
     \[
     \text{Tag Diversity@}N = \frac{1}{|Q|} \sum_{q \in Q} |\text{Unique Tags}(\text{Retrieved}(q))|
     \]
+
     
-    \item \textbf{Genre Diversity@\( N \)}: Evaluates the average number of unique genres within the top \( N \) retrieved tracks.
-    \[
-    \text{Genre Diversity@}N = \frac{1}{|Q|} \sum_{q \in Q} |\text{Unique Genres}(\text{Retrieved}(q))|
-    \]
-    
-    \item \textbf{Popularity Diversity@\( N \)}: Measures the variance in popularity scores among the top \( N \) retrieved tracks.
+    \item \textbf{Popularity Diversity@\( N \)}: Measures the variance in popularity scores among the top \( N \) retrieved tracks. The \texttt{popularity} score for each track is a numerical value representing its overall popularity on the platform, calculated based on factors such as play counts, user ratings, and engagement metrics. A higher variance indicates a broader range of popularity levels among the retrieved tracks.
     \[
     \text{Popularity Diversity@}N = \frac{1}{|Q|} \sum_{q \in Q} \text{Var}(\text{Popularity}(\text{Retrieved}(q)))
     \]
     
-    \item \textbf{Average Popularity@\( N \)}: Computes the mean popularity score of the top \( N \) retrieved tracks.
+    \item \textbf{Average Popularity@\( N \)}: Computes the mean popularity score of the top \( N \) retrieved tracks. This metric provides an indication of the overall popularity of the retrieved set, with higher values signifying that, on average, more popular tracks are being retrieved.
     \[
     \text{AvgPop@}N = \frac{1}{|Q| \times N} \sum_{q \in Q} \sum_{t \in \text{Retrieved}(q)} \text{Popularity}(t)
     \]
@@ -248,46 +369,97 @@ The retrieval systems are evaluated using a combination of accuracy and beyond-a
 
 \subsubsection{Trade-offs and Optimization}
 
-The evaluation framework not only measures the accuracy and quality of retrievals but also explores the trade-offs between different metrics. Specifically, the system investigates how optimizing for diversity metrics such as Tag Diversity and Genre Diversity may impact accuracy metrics like NDCG@10. Parameter tuning and controlled experiments are conducted to balance these objectives, ensuring that the retrieval system delivers both relevant and diverse results.
+The evaluation framework not only measures the accuracy and quality of retrievals but also explores the trade-offs between different metrics. Specifically, the system investigates how optimizing for diversity metrics such as Tag Diversity and Popularity Diversity may impact accuracy metrics like NDCG@10. Parameter tuning and controlled experiments are conducted to balance these objectives, ensuring that the retrieval system delivers both relevant and diverse results.
 
 \subsection{Implementation Details}
 \label{subsec:implementation_details}
 
-The retrieval system was implemented using Python, leveraging libraries such as \texttt{pandas} for data manipulation, \texttt{scikit-learn} for feature normalization and similarity computations, and \texttt{scipy} for efficient handling of sparse matrices. The system architecture is modular, facilitating the addition of new feature modalities and retrieval algorithms. The source code is hosted on GitHub\footnote{\url{https://github.com/yourusername/multimodal-music-retrieval}} for reproducibility and further development.
+The retrieval system was implemented using Python, leveraging a suite of libraries to facilitate data manipulation, feature extraction, similarity computations, and evaluation. Key libraries and tools include:
+
+\begin{itemize}
+    \item \textbf{Pandas}: For efficient data manipulation and preprocessing.
+    \item \textbf{Scikit-learn}: Utilized for feature extraction (TF-IDF, CountVectorizer), normalization, and similarity computations (cosine similarity).
+    \item \textbf{SciPy}: Employed for handling sparse matrices and performing efficient numerical operations.
+    \item \textbf{NLTK}: Used for natural language processing tasks, including tokenization and lemmatization.
+    \item \textbf{Matplotlib and Seaborn}: For data visualization and exploratory analysis.
+\end{itemize}
+
+\subsubsection{System Architecture}
+
+The system architecture is modular, comprising distinct components for data preprocessing, feature extraction, retrieval algorithms, fusion techniques, and evaluation. This modularity facilitates scalability, allowing for the seamless addition of new feature modalities and retrieval strategies.
 
 \subsubsection{Retrieval Algorithms}
 
-Each retrieval algorithm is encapsulated within a dedicated function, accepting a query track ID and returning a ranked list of similar tracks based on the respective similarity measures. The algorithms adhere to a consistent interface, enabling seamless integration and evaluation within the overall system.
+Each retrieval algorithm is encapsulated within a dedicated function, adhering to a consistent interface that accepts a query track ID and returns a ranked list of similar tracks based on the respective similarity measures. This design ensures interoperability and simplifies the evaluation process across different retrieval systems.
 
 \subsubsection{Fusion Methods}
 
-Early and late fusion techniques are implemented as separate modules, allowing for independent experimentation and optimization. The early fusion module concatenates feature vectors before similarity computation, while the late fusion module aggregates similarity scores from individual retrieval systems using weighted combinations.
+Early and late fusion techniques are implemented as separate modules, enabling independent experimentation and optimization. The early fusion module concatenates BERT and MFCC feature vectors before similarity computation, while the late fusion module aggregates similarity scores from the MFCC Retrieval and VGG19 Retrieval systems using weighted combinations.
+
+\subsubsection{Reproducibility and Source Code Management}
+
+To ensure reproducibility and facilitate collaborative development, the source code is hosted on GitHub\footnote{\url{https://github.com/Goldenwert/mmsr_ws24_c}}. The repository contains well-documented scripts, organized directories for data and results, and comprehensive instructions for setting up the environment and running experiments. Additionally, version control practices are adhered to, maintaining a clear history of changes and updates to the codebase.
 
 \subsection{Experimental Setup}
 \label{subsec:experimental_setup}
 
-The experimental evaluation encompasses the following components:
+The experimental evaluation encompasses the following components to ensure a thorough assessment of the retrieval systems:
 
 \begin{itemize}
-    \item **Dataset**: The Music4All-Onion dataset, consisting of 5148 music tracks with comprehensive feature sets across textual, audio, visual, and tag modalities.
+    \item \textbf{Dataset}: The Music4All-Onion dataset, comprising 5148 music tracks with comprehensive feature sets across textual, audio, visual, and tag modalities, serves as the foundation for all experiments.
     
-    \item **Queries**: Each track in the dataset serves as a query, ensuring an exhaustive evaluation across all entries.
+    \item \textbf{Queries}: Each track in the dataset functions as a query, facilitating an exhaustive evaluation across all entries and ensuring robustness in performance assessments.
     
-    \item **Retrieval Configurations**: Ten retrieval systems were evaluated, including baseline, text-based, individual modality-based, and fusion-based approaches.
+    \item \textbf{Retrieval Configurations}: Ten retrieval systems are evaluated, including baseline, text-based, individual modality-based, and fusion-based approaches. This diverse set of configurations allows for comparative analyses and the identification of optimal retrieval strategies.
     
-    \item **Evaluation Metrics**: A combination of accuracy and beyond-accuracy metrics was employed to assess the performance comprehensively.
+    \item \textbf{Evaluation Metrics}: A combination of accuracy and beyond-accuracy metrics is employed to assess the performance comprehensively. This dual-metric approach ensures that the retrieval systems are evaluated not only for relevance but also for quality aspects such as diversity and coverage.
     
-    \item **Hardware and Software**: Experiments were conducted on a machine equipped with [specify hardware details, e.g., CPU, RAM], using Python [version] and relevant libraries.
+    \item \textbf{Reproducibility}: To ensure that the experiments can be replicated, all random processes are seeded appropriately, and detailed documentation is provided within the codebase. Additionally, intermediate results and logs are systematically stored for verification and analysis purposes.
 \end{itemize}
 
-\subsection{Justification of Methodological Choices}
-\label{subsec:methodological_justification}
+\subsubsection{Experimental Procedure}
 
-The selection of feature modalities and retrieval algorithms is motivated by the need to capture the multifaceted nature of music content. Textual features like TF-IDF and BERT embeddings provide insights into lyrical content and semantic relationships, while audio features such as MFCC and spectral contrast encapsulate the acoustic properties of tracks. Visual features derived from VGG19 and ResNet models capture the aesthetic elements of album artwork, contributing to the overall similarity assessment.
+The experimental procedure follows a structured workflow:
 
-Fusion techniques are employed to integrate these diverse modalities, leveraging the complementary strengths of each. Early fusion allows for a unified feature representation, enhancing the discriminative power of similarity computations. Late fusion, on the other hand, facilitates the combination of independent similarity scores, enabling a flexible aggregation strategy that can be tuned based on performance objectives.
+\begin{enumerate}
+    \item \textbf{Data Preparation}: Load and preprocess the dataset, including data cleaning, merging, and normalization.
+    
+    \item \textbf{Feature Extraction}: Extract and normalize features across all modalities—textual, audio, visual, and tags.
+    
+    \item \textbf{Retrieval System Implementation}: Implement the baseline and advanced retrieval algorithms, ensuring adherence to a consistent interface for seamless evaluation.
+    
+    \item \textbf{Fusion Techniques Application}: Apply early and late fusion techniques to integrate multiple modalities, enhancing the retrieval performance.
+    
+    \item \textbf{Evaluation}: Execute the retrieval systems against all queries, computing the defined accuracy and beyond-accuracy metrics to assess performance comprehensively.
+    
+    \item \textbf{Analysis and Discussion}: Analyze the evaluation results to identify strengths and weaknesses of each retrieval system, discussing the trade-offs between different metrics and the impact of multimodal integration.
+\end{enumerate}
 
-The chosen evaluation metrics offer a balanced assessment of retrieval relevance and quality. Accuracy metrics like Precision@10 and NDCG@10 provide quantifiable measures of relevance, while beyond-accuracy metrics such as Coverage@10 and Diversity@10 ensure that the retrieval results are comprehensive and varied, catering to diverse user preferences.
+\subsubsection{Parameter Tuning and Optimization}
+
+To optimize the retrieval systems, parameter tuning is conducted iteratively. Parameters such as the number of features in vector representations, weighting factors in fusion techniques, and threshold values for tag filtering are adjusted based on preliminary evaluation results. Grid search and cross-validation techniques are employed to identify the optimal parameter configurations that balance accuracy and beyond-accuracy objectives effectively.
+
+\subsubsection{Relevance Definitions}
+
+The evaluation framework considers multiple relevance definitions to capture different aspects of track similarity:
+
+\begin{itemize}
+    \item \textbf{Top Genre Matching}: A retrieved track is deemed relevant if its top genre matches the top genre of the query track. This definition emphasizes genre-based similarity.
+    
+    \item \textbf{Tag Overlap}: A retrieved track is considered relevant if it shares a significant number of tags with the query track, capturing thematic and descriptive similarities beyond genre.
+\end{itemize}
+
+By evaluating the retrieval systems under different relevance definitions, the system's robustness and versatility are thoroughly assessed.
+
+
+
+
+
+
+
+
+
+
 
 \section{Results and Discussion}
 \label{sec:results_discussion}
@@ -297,342 +469,515 @@ This section presents the evaluation outcomes of the developed multimodal music 
 \subsection{Quantitative Evaluation}
 \label{subsec:quantitative_evaluation}
 
-The retrieval systems were assessed using a suite of accuracy and beyond-accuracy metrics. Table~\ref{tab:final_evaluation_results} summarizes the performance of each retrieval approach across these metrics.
+The retrieval systems were assessed using a suite of accuracy and beyond-accuracy metrics.  Comprehensive results for all retrieval systems are provided in Appendix~\ref{app:full_evaluation_results}.
 
-\begin{table}[ht]
-    \centering
-    \caption{Final Evaluation Results of Retrieval Systems}
-    \label{tab:final_evaluation_results}
-    \begin{tabular}{lccccccccc}
-        \toprule
-        \textbf{Retrieval System} & \textbf{Precision@10} & \textbf{Recall@10} & \textbf{NDCG@10} & \textbf{MRR} & \textbf{Coverage@10} & \textbf{Tag Diversity@10} & \textbf{Genre Diversity@10} & \textbf{Popularity Diversity@10} & \textbf{AvgPop@10} \\
-        \midrule
-        Random Retrieval                        & 0.0395 & 0.0018 & 0.0398 & 0.0949 & 100.0000 & 9.9662 & 9.8392 & 190.0757 & 34.9916 \\
-        Tag-Based Retrieval                     & 0.3518 & 0.0838 & 0.3906 & 0.6123 & 88.8695 & 8.7863 & 8.3386 & 149.0238 & 38.1216 \\
-        Early Fusion TF-IDF+BERT Retrieval      & 0.0711 & 0.0053 & 0.0731 & 0.1541 & 95.9013 & 9.9289 & 9.7688 & 185.5267 & 36.3373 \\
-        Late Fusion MFCC+VGG19 Retrieval        & 0.0946 & 0.0081 & 0.1038 & 0.2246 & 83.7218 & 9.9289 & 9.6902 & 173.5578 & 37.7285 \\
-        TF-IDF Retrieval                        & 0.0600 & 0.0037 & 0.0614 & 0.1340 & 97.6496 & 9.9417 & 9.7813 & 189.5223 & 36.1279 \\
-        BERT Retrieval                          & 0.0842 & 0.0073 & 0.0857 & 0.1734 & 83.3528 & 9.9033 & 9.7077 & 181.1130 & 37.3213 \\
-        MFCC Retrieval                          & 0.0927 & 0.0081 & 0.0982 & 0.2023 & 92.9099 & 9.9130 & 9.6855 & 164.8594 & 35.9804 \\
-        Spectral Contrast Retrieval             & 0.0633 & 0.0052 & 0.0641 & 0.1423 & 92.0746 & 9.9200 & 9.7595 & 176.1464 & 35.9146 \\
-        VGG19 Retrieval                         & 0.0731 & 0.0063 & 0.0812 & 0.1875 & 87.6457 & 9.9460 & 9.7607 & 166.8281 & 36.1685 \\
-        ResNet Retrieval                        & 0.0786 & 0.0060 & 0.0878 & 0.2018 & 82.8671 & 9.9419 & 9.7492 & 167.7414 & 35.2677 \\
-        \bottomrule
-    \end{tabular}
-\end{table}
+\subsubsection{Top Genre Relevance}
+\label{subsubsec:top_genre_relevance}
 
-\subsubsection{Analysis of Accuracy Metrics}
-
-The accuracy metrics—Precision@10, Recall@10, NDCG@10, and Mean Reciprocal Rank (MRR)—provide insights into the relevance and ranking quality of the retrieved tracks.
+Under the \textit{top\_genre} relevance definition, a retrieved track is considered relevant if its top genre matches that of the query track. This definition emphasizes genre-based similarity, aligning retrieval performance with genre consistency.
 
 \begin{itemize}
-    \item \textbf{Precision@10}: Among all retrieval systems, Tag-Based Retrieval achieved the highest Precision@10 (0.3518), significantly outperforming the baseline Random Retrieval (0.0395). This indicates that tag-based similarity effectively identifies relevant tracks based on shared tags.
-
-    \item \textbf{Recall@10}: Similarly, Tag-Based Retrieval leads in Recall@10 (0.0838), suggesting that it not only retrieves relevant tracks but also covers a substantial portion of the relevant subset within the top 10 results.
-
-    \item \textbf{NDCG@10}: Tag-Based Retrieval also excels in NDCG@10 (0.3906), reflecting its ability to rank more relevant tracks higher in the retrieval list. Other systems, such as Late Fusion MFCC+VGG19 Retrieval (0.1038) and ResNet Retrieval (0.0878), demonstrate moderate performance in ranking relevance.
-
-    \item \textbf{MRR}: The Mean Reciprocal Rank is highest for Tag-Based Retrieval (0.6123), indicating that the first relevant track retrieved by this system appears very early in the ranked list. In contrast, Random Retrieval has a low MRR of 0.0949, underscoring its inefficacy in prioritizing relevant tracks.
-
-    \item \textbf{Overall Performance}: Tag-Based Retrieval consistently outperforms other systems across all accuracy metrics, highlighting the effectiveness of leveraging user-generated tags for music retrieval. Fusion-based systems, particularly Late Fusion MFCC+VGG19 Retrieval, show improved precision and recall compared to single-modality systems, albeit not surpassing the tag-based approach.
+    \item \textbf{Precision@10}: Among all retrieval systems, \textbf{Late Fusion MFCC+VGG19 Retrieval} achieved the highest Precision@10 (0.099), closely followed by \textbf{Early Fusion BERT+MFCC Retrieval} (0.098) and \textbf{Tag-Based Retrieval} (0.095). These systems significantly outperform the baseline \textbf{Random Retrieval} (0.042), indicating the effectiveness of fusion-based and tag-based approaches in identifying relevant tracks based on genre consistency.
+    
+    \item \textbf{Recall@10}: \textbf{Late Fusion MFCC+VGG19 Retrieval}, \textbf{Early Fusion BERT+MFCC Retrieval}, and \textbf{MFCC Retrieval} each achieved a Recall@10 of 0.008. While these values are higher than those of \textbf{Random Retrieval} (0.002), they suggest that these systems have limited coverage of relevant tracks within the top 10 results.
+    
+    \item \textbf{NDCG@10}: \textbf{Late Fusion MFCC+VGG19 Retrieval} leads in NDCG@10 (0.108), followed by \textbf{Early Fusion BERT+MFCC Retrieval} and \textbf{MFCC Retrieval} (both 0.103). This indicates a superior ability to rank more relevant tracks higher in the retrieval list.
+    
+    \item \textbf{Mean Reciprocal Rank (MRR)}: The highest MRR is observed in \textbf{Late Fusion MFCC+VGG19 Retrieval} (0.231), indicating that the first relevant track retrieved by this system appears very early in the ranked list. \textbf{Early Fusion BERT+MFCC Retrieval} and \textbf{ResNet Retrieval} also demonstrate strong performance with MRR values of 0.208.
 \end{itemize}
 
-\subsubsection{Evaluation of Beyond-Accuracy Metrics}
 
-Beyond-accuracy metrics such as Coverage@10, Tag Diversity@10, Genre Diversity@10, Popularity Diversity@10, and AvgPop@10 provide a broader perspective on the retrieval system's performance, assessing aspects like the variety and popularity of retrieved tracks.
+\subsubsection{Tag Overlap Relevance}
+\label{subsubsec:tag_overlap_relevance}
+
+Under the \textit{tag\_overlap} relevance definition, a retrieved track is considered relevant if it shares a significant number of tags with the query track. This definition emphasizes thematic and descriptive similarities beyond genre consistency.
 
 \begin{itemize}
-    \item \textbf{Coverage@10}: Random Retrieval achieves full coverage (100.0000\%), meaning every track appears in at least one retrieval list. Tag-Based Retrieval, while effective in accuracy, has a lower coverage (88.8695\%), indicating that some tracks are not retrieved by this system.
-
-    \item \textbf{Tag Diversity@10} and \textbf{Genre Diversity@10}: Most systems maintain high diversity scores, typically around 9.7 to 9.9, indicating a wide range of tags and genres among the retrieved tracks. Tag-Based Retrieval, however, exhibits slightly lower Tag Diversity@10 (8.7863), suggesting that while it retrieves relevant tracks, they may share similar tags, potentially limiting diversity.
-
-    \item \textbf{Popularity Diversity@10} and \textbf{AvgPop@10}: There is noticeable variability in popularity diversity and average popularity across systems. Random Retrieval has the highest Popularity Diversity@10 (190.0757), reflecting a wide range of popularity levels in its random selections. Tag-Based Retrieval balances relevance and popularity, achieving a higher average popularity (38.1216) with moderate diversity (149.0238). Fusion systems like Early Fusion TF-IDF+BERT Retrieval and Late Fusion MFCC+VGG19 Retrieval strike a balance between diversity and average popularity, ensuring that retrieved tracks are both relevant and varied in popularity.
+    \item \textbf{Precision@10}: \textbf{Late Fusion MFCC+VGG19 Retrieval} achieves the highest Precision@10 (0.0025), followed by \textbf{ResNet Retrieval} (0.0018) and \textbf{VGG19 Retrieval} (0.0018). These systems outperform the baseline \textbf{Random Retrieval} (0.0002), albeit the improvement is marginal, highlighting the challenge of accurately identifying relevant tracks based solely on tag overlap.
+    
+    \item \textbf{Recall@10}: \textbf{Late Fusion MFCC+VGG19 Retrieval} also leads in Recall@10 (0.0060), surpassing all other systems, including \textbf{ResNet Retrieval} (0.0046) and \textbf{VGG19 Retrieval} (0.0047). This indicates a better coverage of relevant tracks within the top 10 results.
+    
+    \item \textbf{NDCG@10}: The highest NDCG@10 is observed in \textbf{Late Fusion MFCC+VGG19 Retrieval} (0.0066), followed by \textbf{ResNet Retrieval} (0.0056) and \textbf{VGG19 Retrieval} (0.0053). These values, although low, reflect the systems' ability to rank relevant tracks higher within the retrieval list.
+    
+    \item \textbf{Mean Reciprocal Rank (MRR)}: \textbf{Late Fusion  Retrieval} achieves the highest MRR (0.0133), indicating that the first relevant track retrieved by this system appears earlier in the ranked list compared to others. \textbf{ResNet Retrieval} and \textbf{VGG19 Retrieval} follow with MRR values of 0.0119 and 0.0108, respectively.
 \end{itemize}
+
+\subsubsection{Beyond-Accuracy Metrics}
+\label{subsubsec:beyond_accuracy_metrics}
+
+Beyond-accuracy metrics such as Coverage@10, Tag Diversity@10, Popularity Diversity@10, and AvgPop@10 provide a broader perspective on the retrieval system’s performance, assessing aspects like the variety and popularity of retrieved tracks.
+
+\begin{itemize}
+    \item \textbf{Coverage@10}: \textbf{Random Retrieval} achieves full coverage (100.00\%), meaning every track appears in at least one retrieval list. \textbf{Tag-Based Retrieval} has a coverage of 88.17\%, indicating that some tracks are not retrieved by this system. \textbf{Early Fusion BERT + MFCC Retrieval} and \textbf{Late Fusion MFCC + VGG19 Retrieval} maintain moderate coverage at 91.06\% and 83.60\%, respectively.
+    
+    \item \textbf{Tag Diversity@10}: Most systems maintain high Tag Diversity@10 scores, ranging from 9.52 to 9.73. \textbf{Tag-Based Retrieval} exhibits a Tag Diversity@10 of 9.71, slightly lower than some fusion-based systems but still indicative of a wide range of tags among the retrieved tracks.
+    
+    \item \textbf{Popularity Diversity@10}: There is noticeable variability in Popularity Diversity@10 across systems. \textbf{Random Retrieval} has the highest Popularity Diversity@10 (191.58), reflecting a broad range of popularity levels in its selections. \textbf{Tag-Based Retrieval} achieves a moderate Popularity Diversity@10 (161.03), while fusion-based systems like \textbf{Late Fusion MFCC + VGG19 Retrieval} maintain a balanced Popularity Diversity@10 (176.08).
+    
+    \item \textbf{AvgPop@10}: \textbf{Late Fusion MFCC + VGG19 Retrieval} achieves the highest AvgPop@10 (37.84), indicating that it retrieves more popular tracks on average. \textbf{Tag-Based Retrieval} balances relevance and popularity with an AvgPop@10 of 34.99, while \textbf{Random Retrieval} maintains an AvgPop@10 of 35.11.
+\end{itemize}
+
+\noindent Overall, \textbf{Late Fusion MFCC + VGG19 Retrieval} consistently outperforms other systems across all accuracy metrics, highlighting the effectiveness of leveraging both MFCC and VGG19 features in a fusion-based approach for music retrieval. \textbf{Tag-Based Retrieval} offers strong precision and recall but with slightly lower diversity, and fusion-based approaches demonstrate the advantage of combining multiple modalities for improved retrieval performance.
+
 
 \subsection{Qualitative Analysis}
 \label{subsec:qualitative_analysis}
 
-While quantitative metrics provide a numerical assessment of retrieval performance, qualitative analysis offers deeper insights into the system's behavior and the nature of the retrieved results. This subsection explores a specific query example, examining how different retrieval systems respond to the query "Chasing Ghosts" by Against the Current.
+While quantitative metrics provide a numerical assessment of retrieval performance, qualitative analysis offers deeper insights into the system’s behavior and the nature of the retrieved results. This subsection explores a specific query example, examining how different retrieval systems respond to the query "\textit{Laura Pausini - Tra Te E Il Mare}."
 
-\subsubsection{Example Query: "Chasing Ghosts" by Against the Current}
-\label{subsubsec:chasing_ghosts_analysis}
+\subsubsection{Example Query: "\textit{Laura Pausini - Tra Te E Il Mare}"}
+\label{subsubsec:example_query}
 
-The following tables present the top three retrieval results from each retrieval system for the query "Chasing Ghosts" by Against the Current, categorized by the similarity metrics employed.
+To provide deeper insights into the retrieval systems' performance, a qualitative analysis was conducted using the query song "\textit{Laura Pausini - Tra Te E Il Mare}". The top five retrieved tracks from each of the leading retrieval systems under the \textit{top\_genre} relevance definition are discussed below. Detailed lists of all retrieved tracks are available in Appendix~\ref{app:retrieved_tracks_specific_query}.
 
-\paragraph{TF-IDF Retrieval}
+\paragraph{Top Genre Relevance}
 
-\begin{table}[ht]
-    \centering
-    \caption{TF-IDF Retrieval Results for "Chasing Ghosts" by Against the Current}
-    \label{tab:tfidf_chasing_ghosts}
-    \begin{tabular}{lc}
-        \toprule
-        \textbf{Song}                        & \textbf{Similarity Score} \\
-        \midrule
-        Chasing the Sun by Hilary Duff        & 0.4987                      \\
-        Chasing the Skyline by Brymir         & 0.4348                      \\
-        Tarzan Boy by Baltimora                & 0.3481                      \\
-        Ghost of a Chance by Rancid            & 0.2787                      \\
-        The Haunting by Testament              & 0.2724                      \\
-        Labels Or Love by Fergie                & 0.2417                      \\
-        Day of the Dead by Hollywood Undead    & 0.2344                      \\
-        Tender Is the Night by Jackson Browne   & 0.2313                      \\
-        Joyride (Omen) by Chevelle              & 0.2310                      \\
-        Lifted by Birdy                         & 0.2271                      \\
-        \bottomrule
-    \end{tabular}
-\end{table}
+Under the \textit{top\_genre} relevance definition, the query "\textit{Laura Pausini - Tra Te E Il Mare}" was evaluated to retrieve tracks with matching top genres. The following analysis highlights the performance and characteristics of each retrieval system based on the retrieved results.
 
-\paragraph{BERT Retrieval}
-
-\begin{table}[ht]
-    \centering
-    \caption{BERT Retrieval Results for "Chasing Ghosts" by Against the Current}
-    \label{tab:bert_chasing_ghosts}
-    \begin{tabular}{lc}
-        \toprule
-        \textbf{Song}                        & \textbf{Similarity Score} \\
-        \midrule
-        Dead Trees by From First to Last      & 0.7191                      \\
-        Black Suit by Super Junior            & 0.7112                      \\
-        Disco Down by Kylie Minogue            & 0.7060                      \\
-        12 Horas by Dilsinho                   & 0.7025                      \\
-        Alone in Love by Mariah Carey          & 0.6995                      \\
-        Ghost by Motorama                      & 0.6942                      \\
-        Go Away by Strawberry Switchblade       & 0.6912                      \\
-        Telephone Line by Electric Light Orchestra & 0.6859                  \\
-        Want Me by Puma Blue                   & 0.6859                      \\
-        Te Quise Olvidar by MDO                 & 0.6851                      \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-\paragraph{MFCC Retrieval}
-
-\begin{table}[ht]
-    \centering
-    \caption{MFCC Retrieval Results for "Chasing Ghosts" by Against the Current}
-    \label{tab:mfcc_chasing_ghosts}
-    \begin{tabular}{lc}
-        \toprule
-        \textbf{Song}                        & \textbf{Distance} \\
-        \midrule
-        SPRORGNSM by Superorganism            & 0.3477               \\
-        High Horse by Kacey Musgraves         & 0.3548               \\
-        Souvenir by Avril Lavigne             & 0.3565               \\
-        Bad Friends by Black Honey             & 0.3582               \\
-        Biscuits by Kacey Musgraves           & 0.3677               \\
-        Last Christmas by Carly Rae Jepsen     & 0.3684               \\
-        Dear Future Husband by Meghan Trainor  & 0.3696               \\
-        Tears Are Not Enough by ABC            & 0.3724               \\
-        Love Away by Capital Cities            & 0.3843               \\
-        The Internet by Jon Bellion             & 0.3865               \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-\paragraph{Spectral Contrast Retrieval}
-
-\begin{table}[ht]
-    \centering
-    \caption{Spectral Contrast Retrieval Results for "Chasing Ghosts" by Against the Current}
-    \label{tab:spectral_chasing_ghosts}
-    \begin{tabular}{lc}
-        \toprule
-        \textbf{Song}                        & \textbf{Similarity Score} \\
-        \midrule
-        If You Come to Me by Atomic Kitten      & 0.9989                      \\
-        Torn Down by Brandy                     & 0.9989                      \\
-        Animal by Smash Into Pieces             & 0.9989                      \\
-        Someone Better by Juveniles             & 0.9989                      \\
-        Killing The Joke by Miles Kane           & 0.9989                      \\
-        Wanted Man by The Last Internationale    & 0.9989                      \\
-        Cumbia Para Olvidar by Mon Laferte       & 0.9988                      \\
-        Big Money Salvia by Hot Dad              & 0.9988                      \\
-        Love It When You Call by The Feeling      & 0.9988                      \\
-        Wither by Dream Theater                  & 0.9988                      \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-\paragraph{VGG19 Retrieval}
-
-\begin{table}[ht]
-    \centering
-    \caption{VGG19 Retrieval Results for "Chasing Ghosts" by Against the Current}
-    \label{tab:vgg19_chasing_ghosts}
-    \begin{tabular}{lc}
-        \toprule
-        \textbf{Song}                        & \textbf{Similarity Score} \\
-        \midrule
-        The Consequence by You Me at Six       & 0.7029                      \\
-        Rain by Hollywood Undead              & 0.6911                      \\
-        Wicked Game by Theory of a Deadman      & 0.6906                      \\
-        Portobello Belle by Dire Straits        & 0.6901                      \\
-        Sabes by Reik                           & 0.6849                      \\
-        All You Got by Tegan and Sara            & 0.6809                      \\
-        Black Dahlia by Hollywood Undead         & 0.6770                      \\
-        Lay Down by Priestess                    & 0.6749                      \\
-        Inabalavelmente by Charlie Brown JR.      & 0.6749                      \\
-        Don't Leave Home by Dido                  & 0.6748                      \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-\paragraph{ResNet Retrieval}
-
-\begin{table}[ht]
-    \centering
-    \caption{ResNet Retrieval Results for "Chasing Ghosts" by Against the Current}
-    \label{tab:resnet_chasing_ghosts}
-    \begin{tabular}{lc}
-        \toprule
-        \textbf{Song}                        & \textbf{Distance} \\
-        \midrule
-        Cities of the Future by Infected Mushroom & 0.8890                      \\
-        Unbreakable Smile by Tori Kelly           & 0.9079                      \\
-        Rise and Fall by The Offspring            & 0.9205                      \\
-        Invincible Force by Destruction           & 0.9277                      \\
-        Blues Walk by Lou Donaldson                & 0.9297                      \\
-        Bosco by Placebo                           & 0.9325                      \\
-        Processed Beats by Kasabian                & 0.9328                      \\
-        Scarlet by Delain                          & 0.9381                      \\
-        A Strange Boy by Joni Mitchell             & 0.9419                      \\
-        Passing by Leprous                          & 0.9433                      \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-\subsubsection{Analysis of "Chasing Ghosts" Query Results}
-
-The query "Chasing Ghosts" by Against the Current, classified under the genre \textit{rock}, was evaluated across different retrieval systems. The following analysis highlights the performance and characteristics of each system based on the retrieved results.
-
-\paragraph{TF-IDF Retrieval}
-
-Table~\ref{tab:tfidf_chasing_ghosts} displays the top ten retrieval results using the TF-IDF with Cosine Similarity system. The highest similarity score is observed with "Chasing the Sun" by Hilary Duff (0.4987), indicating a moderate lexical overlap between the query and the retrieved song. Subsequent results show decreasing similarity scores, reflecting diminishing lexical similarities.
-
-\textbf{Observations}:
 \begin{itemize}
-    \item **Lexical Overlap**: The system prioritizes songs with similar titles or lyrics containing keywords like "Chasing," "Ghosts," or related terms.
-    \item **Genre Consistency**: While the query belongs to the \textit{rock} genre, some retrieved tracks like "Tarzan Boy" by Baltimora and "Labels Or Love" by Fergie may belong to different genres, indicating that lexical similarity does not always guarantee genre alignment.
+    \item \textbf{Late Fusion MFCC+VGG19 Retrieval}: This system retrieved highly relevant tracks such as "Sheryl Crow - Superstar" (0.921) and "James Morrison - One Last Chance" (0.916). The high Precision@10 and NDCG@10 scores indicate effective genre-based matching and ranking.
+    
+    \item \textbf{Early Fusion BERT+MFCC Retrieval}: Retrieved tracks like "Britney Spears - Break the Ice" (0.942) and "Kylie Minogue - My Secret Heart" (0.939) demonstrate strong genre consistency, as reflected in its high Precision@10 and AvgPop@10 scores.
+    
+    \item \textbf{Tag-Based Retrieval}: Although primarily tag-oriented, this system successfully identified genre-consistent tracks such as "Billie Myers - Kiss The Rain" (0.617). However, the lower Tag Diversity@10 suggests that retrieved tracks may share similar tags.
+    
+    \item \textbf{MFCC Retrieval}: With tracks like "Britney Spears - Break the Ice" (9.916) and "Kylie Minogue - My Secret Heart" (10.493), this system emphasizes acoustic features that align well with the query's genre.
+    
+    \item \textbf{ResNet Retrieval}: Retrieved tracks such as "Miguel Bosé - Duende" (40.754) and "Bat for Lashes - A Wall" (41.078) showcase the system's ability to identify genre-consistent tracks based on visual embeddings.
 \end{itemize}
 
-\paragraph{BERT Retrieval}
+\subsubsection{Analysis of "\textit{Laura Pausini - Tra Te E Il Mare}" Query Results}
+\label{subsubsec:analysis_query_results}
 
-Table~\ref{tab:bert_chasing_ghosts} presents the top ten results from the BERT Retrieval system, which leverages contextual embeddings to capture deeper semantic relationships.
+The query "\textit{Laura Pausini - Tra Te E Il Mare}," classified under its respective genres and tags, was evaluated across different retrieval systems. The following analysis highlights the performance and characteristics of each system based on the retrieved results.
 
-\textbf{Observations}:
+\paragraph{Late Fusion MFCC+VGG19 Retrieval}
+
 \begin{itemize}
-    \item **Semantic Similarity**: The highest similarity score is with "Dead Trees" by From First to Last (0.7191), suggesting a stronger semantic connection beyond mere lexical overlap.
-    \item **Diverse Genres**: Retrieved tracks span various genres, including K-pop ("Black Suit" by Super Junior) and pop ("Disco Down" by Kylie Minogue), indicating the system's focus on broader semantic themes.
+    \item \textbf{Top Genre Relevance}: Retrieved tracks like "Sheryl Crow - Superstar" (0.921) and "James Morrison - One Last Chance" (0.916) demonstrate high genre alignment. The system's fusion approach effectively combines acoustic and visual features, resulting in precise genre-based retrievals.
+\end{itemize}
+
+\paragraph{Early Fusion BERT+MFCC Retrieval}
+
+\begin{itemize}
+    \item \textbf{Top Genre Relevance}: Retrieved tracks like "Britney Spears - Break the Ice" (0.942) and "Kylie Minogue - My Secret Heart" (0.939) showcase effective genre-based retrieval. The integration of BERT's contextual embeddings with MFCC features enhances the system's ability to capture both semantic and acoustic similarities.
+\end{itemize}
+
+\paragraph{Tag-Based Retrieval}
+
+\begin{itemize}
+    \item \textbf{Top Genre Relevance}: Retrieved track "Billie Myers - Kiss The Rain" (0.617) highlights the system's ability to leverage tag-based similarity for genre-consistent retrieval. However, the lower Precision@10 compared to fusion-based systems suggests room for improvement in accurately identifying top-relevant tracks.
 \end{itemize}
 
 \paragraph{MFCC Retrieval}
 
-Table~\ref{tab:mfcc_chasing_ghosts} shows the top ten retrieval results based on MFCC Euclidean distances, which measure acoustic similarity.
-
-\textbf{Observations}:
 \begin{itemize}
-    \item **Acoustic Features**: The retrieved songs, such as "SPRORGNSM" by Superorganism and "High Horse" by Kacey Musgraves, share similar acoustic properties like rhythm and melody.
-    \item **Genre Variation**: Similar to TF-IDF Retrieval, the genre diversity is noticeable, with tracks from genres like country and pop appearing in the results.
-\end{itemize}
-
-\paragraph{Spectral Contrast Retrieval}
-
-Table~\ref{tab:spectral_chasing_ghosts} lists the top ten results from the Spectral Contrast Retrieval system, which emphasizes timbral textures.
-
-\textbf{Observations}:
-\begin{itemize}
-    \item **High Similarity Scores**: All retrieved tracks have similarity scores exceeding 0.9988, indicating near-identical spectral characteristics.
-    \item **Genre Discrepancy**: Despite high similarity scores, genres vary widely, suggesting that spectral features alone may not effectively capture genre-specific nuances.
-\end{itemize}
-
-\paragraph{VGG19 Retrieval}
-
-Table~\ref{tab:vgg19_chasing_ghosts} presents the top ten retrieval results from the VGG19 Retrieval system, which utilizes visual embeddings from album artwork.
-
-\textbf{Observations}:
-\begin{itemize}
-    \item **Visual Aesthetics**: Retrieved songs like "The Consequence" by You Me at Six and "Wicked Game" by Theory of a Deadman likely share similar visual themes in their album covers, such as color schemes or imagery.
-    \item **Genre and Style Diversity**: The system retrieves tracks across different genres, emphasizing visual similarities over musical genre alignment.
+    \item \textbf{Top Genre Relevance}: Tracks such as "Britney Spears - Break the Ice" (9.916) and "Kylie Minogue - My Secret Heart" (10.493) indicate strong acoustic feature alignment with the query's genre. The high Similarity Scores reflect the system's proficiency in identifying musically similar tracks.
 \end{itemize}
 
 \paragraph{ResNet Retrieval}
 
-Table~\ref{tab:resnet_chasing_ghosts} lists the top ten results from the ResNet Retrieval system, focusing on visual feature similarity through ResNet embeddings.
-
-\textbf{Observations}:
 \begin{itemize}
-    \item **Strong Visual Similarity**: High similarity scores indicate that the retrieved tracks have visually similar album artwork.
-    \item **Variety in Genres**: Similar to other visual retrieval systems, ResNet Retrieval retrieves tracks from diverse genres, reflecting the system's emphasis on visual rather than musical features.
+    \item \textbf{Top Genre Relevance}: Retrieved tracks such as "Miguel Bosé - Duende" (40.754) and "Bat for Lashes - A Wall" (41.078) demonstrate effective genre-based retrieval through visual embeddings. The system excels in identifying tracks that not only match the genre but also share visual aesthetic similarities.
 \end{itemize}
 
 \subsubsection{Discussion of Qualitative Findings}
+\label{subsubsec:discussion_qualitative_findings}
 
-The qualitative analysis of the "Chasing Ghosts" query reveals the distinct operational characteristics of each retrieval system:
+The qualitative analysis of the "\textit{Laura Pausini - Tra Te E Il Mare}" query reveals the distinct operational characteristics of each retrieval system under the \textit{top\_genre} relevance definition:
 
 \begin{itemize}
-    \item \textbf{TF-IDF Retrieval}:
+    \item \textbf{Late Fusion MFCC+VGG19 Retrieval}:
     \begin{itemize}
-        \item **Strengths**: Effectively identifies tracks with lexical similarities, especially in titles or lyrics.
-        \item **Limitations**: May retrieve songs from different genres if they share common keywords, leading to genre inconsistency.
+        \item \textbf{Strengths}: Excels in both precision and recall. The fusion of MFCC (acoustic features) and VGG19 (visual features) enables the system to effectively capture genre consistency, resulting in highly relevant and accurately ranked retrievals.
+        \item \textbf{Limitations}: While achieving high relevance, the system may retrieve tracks with varying popularity levels, as indicated by its high Popularity Diversity@10 (176.08).
     \end{itemize}
     
-    \item \textbf{BERT Retrieval}:
+    \item \textbf{Early Fusion BERT+MFCC Retrieval}:
     \begin{itemize}
-        \item **Strengths**: Captures deeper semantic relationships, resulting in more contextually relevant recommendations.
-        \item **Limitations**: Still susceptible to retrieving tracks from diverse genres, as semantic similarity does not always align with genre-specific traits.
+        \item \textbf{Strengths}: Effectively captures both semantic and acoustic similarities, leading to highly relevant retrievals. The integration of BERT's contextual embeddings with MFCC features enhances the system's ability to align retrieved tracks with the query's genre.
+        \item \textbf{Limitations}: Although precision is high, the system may retrieve tracks with moderate popularity diversity, indicating a balance between relevance and diversity.
+    \end{itemize}
+    
+    \item \textbf{Tag-Based Retrieval}:
+    \begin{itemize}
+        \item \textbf{Strengths}: Demonstrates strong genre consistency through tag-based similarity, effectively retrieving tracks that align with the query's genre.
+        \item \textbf{Limitations}: The significantly lower Tag Diversity@10 (5.20) suggests that retrieved tracks may share similar tags, potentially limiting the variety of genres or sub-genres represented.
     \end{itemize}
     
     \item \textbf{MFCC Retrieval}:
     \begin{itemize}
-        \item **Strengths**: Excels in identifying tracks with similar acoustic features, enhancing the retrieval of musically similar songs.
-        \item **Limitations**: Acoustic similarity does not necessarily correspond to genre alignment, resulting in a mix of genres in the results.
-    \end{itemize}
-    
-    \item \textbf{Spectral Contrast Retrieval}:
-    \begin{itemize}
-        \item **Strengths**: Achieves high similarity scores, indicating precise timbral texture matching.
-        \item **Limitations**: High spectral similarity does not guarantee genre or thematic relevance, as evidenced by the retrieval of diverse genres.
-    \end{itemize}
-    
-    \item \textbf{VGG19 Retrieval}:
-    \begin{itemize}
-        \item **Strengths**: Identifies tracks with visually similar album artwork, which can enhance the user experience by providing aesthetically coherent recommendations.
-        \item **Limitations**: Visual similarity does not inherently correlate with musical genre or style, leading to genre diversity in the results.
+        \item \textbf{Strengths}: High Precision@10 indicates effective acoustic feature matching, ensuring that retrieved tracks are musically similar and genre-consistent.
+        \item \textbf{Limitations}: While acoustic similarity ensures genre consistency, the system may overlook thematic or lyrical similarities, limiting the scope of retrieved tracks.
     \end{itemize}
     
     \item \textbf{ResNet Retrieval}:
     \begin{itemize}
-        \item **Strengths**: Similar to VGG19 Retrieval, excels in identifying visually similar tracks based on album artwork.
-        \item **Limitations**: Shares the same limitation of genre diversity due to the focus on visual features.
+        \item \textbf{Strengths}: Excels in identifying genre-consistent tracks through visual embeddings, effectively capturing aesthetic similarities reflected in album artwork. This dual consideration of acoustic and visual features enhances the system's retrieval accuracy.
+        \item \textbf{Limitations}: The focus on visual similarity may lead to the retrieval of tracks that are visually similar but may not align perfectly with the genre nuances of the query.
     \end{itemize}
 \end{itemize}
 
-\subsubsection{Implications and Future Work}
 
-The evaluation of the "Chasing Ghosts" query demonstrates the varying effectiveness of different retrieval systems in balancing lexical, semantic, acoustic, and visual similarities. Tag-Based Retrieval emerges as the most effective system in terms of accuracy metrics, underscoring the value of user-generated tags in capturing semantic relevance. However, it also exhibits lower diversity in retrieved tags, suggesting a potential area for improvement.
+\subsection{Discussion}
+\label{subsec:discussion}
 
-Fusion-based retrieval systems, such as Early Fusion TF-IDF+BERT Retrieval and Late Fusion MFCC+VGG19 Retrieval, offer a balanced approach by integrating multiple modalities. While they do not surpass Tag-Based Retrieval in accuracy, they enhance coverage and maintain high diversity scores, indicating their potential in providing varied and comprehensive retrieval results.
+The evaluation results underscore the significance of multimodal integration in enhancing music retrieval performance. Fusion techniques, particularly the \textbf{Late Fusion MFCC+VGG19 Retrieval}, consistently outperform unimodal systems across both relevance definitions, highlighting the complementary strengths of audio and visual features in capturing both genre-based and thematic similarities.
 
-\textbf{Future Work}:
-\begin{itemize}
-    \item **Enhanced Fusion Techniques**: Investigate more advanced fusion strategies that dynamically weight different modalities based on query context to improve both accuracy and diversity.
-    
-    \item **Contextual Understanding**: Incorporate contextual and emotional analysis of lyrics to align lexical and semantic similarities with thematic relevance.
-    
-    \item **User-Centric Evaluation**: Integrate user feedback mechanisms to refine retrieval algorithms based on user preferences and satisfaction.
-    
-    \item **Expansion of Feature Modalities**: Explore additional feature types, such as rhythm patterns or sentiment analysis, to enrich the retrieval process.
-    
-    \item **Cross-Modal Retrieval**: Develop systems that can perform retrieval across different modalities, such as retrieving audio tracks based on visual inputs or vice versa.
-\end{itemize}
+\subsubsection{Impact of Fusion Techniques}
 
-By addressing these areas, future retrieval systems can achieve a more nuanced and contextually aware music search experience, bridging the gap between lexical, semantic, acoustic, and visual similarities.
+The superior performance of the late fusion approach suggests that aggregating similarity scores from distinct modalities can effectively balance the contributions of each feature type, leading to more robust and relevant retrievals. The integration of MFCC audio features with VGG19 visual embeddings allows the system to capture a broader spectrum of similarities, encompassing both auditory and visual aspects of music tracks.
+
+In contrast, early fusion, while also effective, may face challenges related to feature vector dimensionality and the relative weighting of different modalities. The late fusion approach, by maintaining separate similarity computations before aggregation, provides greater flexibility in balancing modality contributions, thereby enhancing overall retrieval quality.
+
+\subsubsection{Role of Individual Modalities}
+
+Among unimodal systems, audio-based retrievals (\textbf{MFCC Retrieval}) demonstrate strong performance under the \textit{top\_genre} relevance definition, emphasizing the importance of audio features in capturing genre-specific characteristics. Visual-based retrievals (\textbf{VGG19 Retrieval}) also show commendable performance under the \textit{tag\_overlap} relevance definition, indicating their effectiveness in identifying thematically similar tracks based on visual aesthetics.
+
+Textual features, represented through \textbf{BERT Retrieval} and \textbf{TF-IDF Retrieval}, exhibit moderate performance, suggesting that while they contribute valuable semantic information, their standalone effectiveness may be limited without integration with other modalities.
+
+\subsubsection{Beyond-Accuracy Metrics}
+
+The beyond-accuracy metrics, including Coverage@10, Tag Diversity@10, Popularity Diversity@10, and AvgPop@10, provide additional insights into the retrieval systems' performance. High Coverage@10 values across most systems indicate that the majority of tracks are retrievable, ensuring a comprehensive coverage of the catalog. Tag Diversity@10 and Popularity Diversity@10 metrics reveal that the retrieval systems maintain a balanced diversity in both descriptive tags and popularity scores, enhancing the user experience by providing varied and engaging results.
+
+\subsubsection{Trade-offs and Optimization}
+
+The evaluation highlights inherent trade-offs between different metrics. For instance, optimizing for higher Precision@10 may lead to reduced Diversity@10, as more similar tracks are retrieved at the expense of diversity. The fusion techniques offer a balanced approach, achieving high relevance while maintaining substantial diversity and coverage, thereby addressing these trade-offs effectively.
 
 \section{Conclusion}
-\label{sec:conclusion}
+\label{subsec:conclusion}
 
-% Continue with the conclusion section as needed
+The evaluation of the multimodal music retrieval systems demonstrates the efficacy of integrating diverse data modalities to enhance retrieval performance. Fusion techniques, particularly late fusion, significantly improve relevance and diversity, outperforming unimodal approaches. The incorporation of audio and visual features, alongside textual information, provides a comprehensive framework for capturing the multifaceted nature of music tracks, leading to more relevant and engaging retrieval results.
+
+ Overall, the findings highlight the potential of multimodal integration in advancing music information retrieval systems, offering a balanced and user-centric approach to music discovery.
+
+
+\appendix
+
+
+
+\newpage
+
+\section{Retrieved Tracks for Query: \textit{Laura Pausini - Tra Te E Il Mare}}
+\label{app:retrieved_tracks_specific_query}
+
+The following ten tables present the top ten retrieved tracks for each retrieval system based on the query \textit{Laura Pausini - Tra Te E Il Mare} under the \textit{top\_genre} relevance definition.
+
+% Part B: Retrieved Tracks Tables
+% Each table now has three columns: Artist, Song, Similarity Score
+
+\subsection{Random Retrieval}
+
+\Needspace{10\baselineskip}
+
+\begin{table}[H]
+    \centering
+    \caption{Top 10 Retrieved Tracks using Random Retrieval under Top Genre Relevance}
+    \label{tab:retrieved_random_top_genre_specific}
+    \footnotesize
+    \begin{tabular}{l l c}
+        \toprule
+        \textbf{Artist} & \textbf{Song} & \textbf{Similarity Score} \\
+        \midrule
+        Jimmy Cliff & I Can See Clearly Now & 0.042 \\
+        3OH!3 & House Party & 0.042 \\
+        Billie Myers & Kiss The Rain & 0.042 \\
+        Muddy Waters & I Just Want To Make Love To You & 0.042 \\
+        Forfun & Cósmica & 0.042 \\
+        Lenka & Everything at Once & 0.042 \\
+        Deafheaven & Worthless Animal & 0.042 \\
+        Wax & Right Between the Eyes & 0.042 \\
+        Robert Palmer & Looking For Clues & 0.042 \\
+        Tokio Hotel & Boy Don't Cry & 0.042 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Tag-Based Retrieval}
+
+\Needspace{10\baselineskip}
+
+\begin{table}[H]
+    \centering
+    \caption{Top 10 Retrieved Tracks using Tag-Based Retrieval under Top Genre Relevance}
+    \label{tab:retrieved_tag_based_top_genre_specific}
+    \footnotesize
+    \begin{tabular}{l l c}
+        \toprule
+        \textbf{Artist} & \textbf{Song} & \textbf{Similarity Score} \\
+        \midrule
+        Billie Myers & Kiss The Rain & 0.617 \\
+        Hooverphonic & Frosted Flake Wood & 0.567 \\
+        Laura Pausini & La prospettiva di me & 0.567 \\
+        Aretha Franklin & What A Friend We Have In Jesus & 0.535 \\
+        10,000 Maniacs & More Than This & 0.535 \\
+        L7 & Monster & 0.535 \\
+        Ambar Lucid & Eyes & 0.535 \\
+        Georgi Kay & Lone Wolf & 0.534 \\
+        Céline Dion & Coulda Woulda Shoulda & 0.534 \\
+        Missy Elliott & Bite Our Style (Interlude) & 0.534 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{TF-IDF Retrieval}
+
+\Needspace{10\baselineskip}
+
+\begin{table}[H]
+    \centering
+    \caption{Top 10 Retrieved Tracks using TF-IDF Retrieval under Top Genre Relevance}
+    \label{tab:retrieved_tfidf_top_genre_specific}
+    \footnotesize
+    \begin{tabular}{l l c}
+        \toprule
+        \textbf{Artist} & \textbf{Song} & \textbf{Similarity Score} \\
+        \midrule
+        Billie Myers & Kiss The Rain & 0.346 \\
+        Georgi Kay & Lone Wolf & 0.304 \\
+        Hooverphonic & Frosted Flake Wood & 0.244 \\
+        Aretha Franklin & What A Friend We Have In Jesus & 0.232 \\
+        Missy Elliott & Bite Our Style (Interlude) & 0.232 \\
+        Céline Dion & Coulda Woulda Shoulda & 0.232 \\
+        India.Arie & Good Man & 0.232 \\
+        Ambar Lucid & Eyes & 0.232 \\
+        Christina Perri & Shot Me in the Heart & 0.232 \\
+        L7 & Monster & 0.232 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{BERT Retrieval}
+
+\Needspace{10\baselineskip}
+
+\begin{table}[H]
+    \centering
+    \caption{Top 10 Retrieved Tracks using BERT Retrieval under Top Genre Relevance}
+    \label{tab:retrieved_bert_top_genre_specific}
+    \footnotesize
+    \begin{tabular}{l l c}
+        \toprule
+        \textbf{Artist} & \textbf{Song} & \textbf{Similarity Score} \\
+        \midrule
+        Avenged Sevenfold & So Far Away & 0.810 \\
+        Mon Laferte & Vuelve Por Favor & 0.802 \\
+        Ricky Martin & Vuelve & 0.788 \\
+        The Kooks & All the Time & 0.770 \\
+        La Oreja de Van Gogh & Flores en la orilla & 0.764 \\
+        Los Hermanos & Condicional & 0.763 \\
+        Staind & Home & 0.761 \\
+        Evanescence & My Immortal & 0.758 \\
+        Katie Melua & I Cried for You & 0.757 \\
+        Mary J. Blige & Come to Me (Peace) & 0.756 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{MFCC Retrieval}
+
+\Needspace{10\baselineskip}
+
+\begin{table}[H]
+    \centering
+    \caption{Top 10 Retrieved Tracks using MFCC Retrieval under Top Genre Relevance}
+    \label{tab:retrieved_mfcc_top_genre_specific}
+    \footnotesize
+    \begin{tabular}{l l c}
+        \toprule
+        \textbf{Artist} & \textbf{Song} & \textbf{Similarity Score} \\
+        \midrule
+        Britney Spears & Break the Ice & 9.916 \\
+        Kylie Minogue & My Secret Heart & 10.493 \\
+        Backstreet Boys & Safest Place to Hide & 10.517 \\
+        Foxy Shazam & Introducing Foxy & 10.928 \\
+        Skank & Esquecimento & 11.003 \\
+        Take That & Hold On & 11.176 \\
+        Rose Funeral & The Desolate Form & 11.244 \\
+        Tame Impala & Reality In Motion & 11.256 \\
+        S Club 7 & Two In A Million & 11.399 \\
+        Vanessa Carlton & Private Radio & 11.405 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Spectral Contrast Retrieval}
+
+\Needspace{10\baselineskip}
+
+\begin{table}[H]
+    \centering
+    \caption{Top 10 Retrieved Tracks using Spectral Contrast Retrieval under Top Genre Relevance}
+    \label{tab:retrieved_spectral_contrast_top_genre_specific}
+    \footnotesize
+    \begin{tabular}{l l c}
+        \toprule
+        \textbf{Artist} & \textbf{Song} & \textbf{Similarity Score} \\
+        \midrule
+        Dr. Hook & Sharing The Night Together & 0.999 \\
+        Andreas Bourani & Auf Anderen Wegen & 0.999 \\
+        Stereophonics & A Minute Longer & 0.999 \\
+        CHVRCHES & Never Say Die & 0.999 \\
+        The Preatures & Yanada & 0.999 \\
+        a-ha & Under The Makeup & 0.998 \\
+        Renaissance & Northern Lights & 0.998 \\
+        Bryan Adams & You Can't Take Me & 0.999 \\
+        Spice Girls & Goodbye & 0.998 \\
+        Thompson Twins & King For A Day & 0.998 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{VGG19 Retrieval}
+
+\Needspace{10\baselineskip}
+
+\begin{table}[H]
+    \centering
+    \caption{Top 10 Retrieved Tracks using VGG19 Retrieval under Top Genre Relevance}
+    \label{tab:retrieved_vgg19_top_genre_specific}
+    \footnotesize
+    \begin{tabular}{l l c}
+        \toprule
+        \textbf{Artist} & \textbf{Song} & \textbf{Similarity Score} \\
+        \midrule
+        Alter Bridge & Wonderful Life & 0.951 \\
+        Suprême NTM & Laisse pas traîner ton fils & 0.950 \\
+        Doves & Pounding & 0.945 \\
+        Jonas Brothers & Hello Beautiful & 0.944 \\
+        Bat for Lashes & A Wall & 0.941 \\
+        Theatre of Tragedy & A Rose for the Dead & 0.940 \\
+        Depeche Mode & Going Backwards & 0.938 \\
+        Lacrimas Profundere & One Hope's Evening & 0.938 \\
+        Josh Groban & Granted & 0.937 \\
+        Haken & 1985 & 0.936 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{ResNet Retrieval}
+
+\Needspace{10\baselineskip}
+
+\begin{table}[H]
+    \centering
+    \caption{Top 10 Retrieved Tracks using ResNet Retrieval under Top Genre Relevance}
+    \label{tab:retrieved_resnet_top_genre_specific}
+    \footnotesize
+    \begin{tabular}{l l c}
+        \toprule
+        \textbf{Artist} & \textbf{Song} & \textbf{Similarity Score} \\
+        \midrule
+        Miguel Bosé & Duende & 40.754 \\
+        Bat for Lashes & A Wall & 41.078 \\
+        Mariah Carey & It's a Wrap & 42.983 \\
+        Depeche Mode & Going Backwards & 43.084 \\
+        Casper & Hinterland & 44.339 \\
+        Haken & 1985 & 44.776 \\
+        Theatre of Tragedy & A Rose for the Dead & 44.785 \\
+        Alter Bridge & Wonderful Life & 45.034 \\
+        Snow Patrol & Somewhere a Clock Is Ticking & 45.538 \\
+        Lacuna Coil & Underdog & 46.074 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Early Fusion BERT+MFCC Retrieval}
+
+\Needspace{10\baselineskip}
+
+\begin{table}[H]
+    \centering
+    \caption{Top 10 Retrieved Tracks using Early Fusion BERT+MFCC Retrieval under Top Genre Relevance}
+    \label{tab:retrieved_early_fusion_top_genre_specific}
+    \footnotesize
+    \begin{tabular}{l l c}
+        \toprule
+        \textbf{Artist} & \textbf{Song} & \textbf{Similarity Score} \\
+        \midrule
+        Britney Spears & Break the Ice & 0.942 \\
+        Kylie Minogue & My Secret Heart & 0.939 \\
+        Backstreet Boys & Safest Place to Hide & 0.934 \\
+        Skank & Esquecimento & 0.933 \\
+        Heart & Dreamboat Annie & 0.932 \\
+        Tame Impala & Reality In Motion & 0.929 \\
+        Jamiroquai & Lifeline & 0.928 \\
+        S Club 7 & Two In A Million & 0.927 \\
+        Klymaxx & I Miss You & 0.927 \\
+        Foxy Shazam & Introducing Foxy & 0.927 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Late Fusion MFCC+VGG19 Retrieval}
+
+\Needspace{10\baselineskip}
+
+\begin{table}[H]
+    \centering
+    \caption{Top 10 Retrieved Tracks using Late Fusion MFCC+VGG19 Retrieval under Top Genre Relevance}
+    \label{tab:retrieved_late_fusion_top_genre_specific}
+    \footnotesize
+    \begin{tabular}{l l c}
+        \toprule
+        \textbf{Artist} & \textbf{Song} & \textbf{Similarity Score} \\
+        \midrule
+        Sheryl Crow & Superstar & 0.921 \\
+        James Morrison & One Last Chance & 0.916 \\
+        Lacrimas Profundere & One Hope's Evening & 0.909 \\
+        Britney Spears & Break the Ice & 0.908 \\
+        Hey Violet & Break My Heart & 0.906 \\
+        Lady Antebellum & Bartender & 0.902 \\
+        Suprême NTM & Laisse pas traîner ton fils & 0.902 \\
+        Jonas Brothers & Hello Beautiful & 0.901 \\
+        Take That & Hold On & 0.900 \\
+        Laura Pausini & Bendecida pasión & 0.899 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\newpage
+
+\begin{landscape} % Rotate the page for wide tables
+\section{Final Evaluation Results of Retrieval Systems}
+\label{app:full_evaluation_results}
+
+% Part A: Comprehensive Evaluation Table
+\begin{table}[H]
+    \centering
+    \caption{Final Evaluation Results of Retrieval Systems}
+    \label{tab:final_evaluation_results_appendix}
+    \footnotesize
+    \begin{tabularx}{\linewidth}{l l *{8}{Y}}
+        \toprule
+        \textbf{Retrieval System} & \textbf{Relevance Definition} & \textbf{Precision@10} & \textbf{Recall@10} & \textbf{NDCG@10} & \textbf{MRR} & \textbf{Coverage@10} & \textbf{Tag Diversity@10} & \textbf{Popularity Diversity@10} & \textbf{AvgPop@10} \\
+        \midrule
+        Random Retrieval & top\_genre & 0.042 & 0.002 & 0.042 & 0.098 & 99.98 & 9.72 & 190.83 & 35.11 \\
+        Tag-Based Retrieval & top\_genre & 0.095 & 0.008 & 0.094 & 0.195 & 88.17 & 5.20 & 161.03 & 34.99 \\
+        TF-IDF Retrieval & top\_genre & 0.083 & 0.007 & 0.096 & 0.188 & 89.87 & 9.61 & 163.02 & 34.76 \\
+        BERT Retrieval & top\_genre & 0.088 & 0.008 & 0.089 & 0.179 & 83.27 & 9.63 & 182.73 & 37.47 \\
+        MFCC Retrieval & top\_genre & 0.097 & 0.008 & 0.103 & 0.209 & 92.78 & 9.52 & 167.94 & 36.10 \\
+        Spectral Contrast Retrieval & top\_genre & 0.067 & 0.006 & 0.068 & 0.150 & 92.27 & 9.63 & 179.70 & 36.05 \\
+        VGG19 Retrieval & top\_genre & 0.077 & 0.006 & 0.085 & 0.193 & 87.55 & 9.63 & 170.17 & 36.32 \\
+        ResNet Retrieval & top\_genre & 0.082 & 0.006 & 0.091 & 0.208 & 82.76 & 9.63 & 168.27 & 35.25 \\
+        Early Fusion BERT+MFCC Retrieval & top\_genre & 0.098 & 0.008 & 0.103 & 0.208 & 91.06 & 9.52 & 171.06 & 36.71 \\
+        Late Fusion MFCC+VGG19 Retrieval & top\_genre & 0.099 & 0.008 & 0.108 & 0.231 & 83.60 & 9.61 & 176.08 & 37.84 \\
+        \addlinespace
+        Random Retrieval & tag\_overlap & 0.0002 & 0.0003 & 0.0003 & 0.0005 & 100.00 & 9.73 & 191.58 & 35.10 \\
+        Tag-Based Retrieval & tag\_overlap & 0.0010 & 0.0023 & 0.0028 & 0.0030 & 88.17 & 5.20 & 161.03 & 34.99 \\
+        TF-IDF Retrieval & tag\_overlap & 0.0009 & 0.0023 & 0.0014 & 0.0023 & 89.87 & 9.71 & 163.02 & 34.76 \\
+        BERT Retrieval & tag\_overlap & 0.0008 & 0.0016 & 0.0013 & 0.0025 & 83.27 & 9.63 & 182.73 & 37.47 \\
+        MFCC Retrieval & tag\_overlap & 0.0015 & 0.0033 & 0.0027 & 0.0054 & 92.78 & 9.52 & 167.94 & 36.10 \\
+        Spectral Contrast Retrieval & tag\_overlap & 0.0008 & 0.0014 & 0.0013 & 0.0026 & 92.27 & 9.63 & 179.70 & 36.05 \\
+        VGG19 Retrieval & tag\_overlap & 0.0018 & 0.0047 & 0.0053 & 0.0108 & 87.55 & 9.63 & 170.17 & 36.32 \\
+        ResNet Retrieval & tag\_overlap & 0.0018 & 0.0046 & 0.0056 & 0.0119 & 82.76 & 9.63 & 168.27 & 35.25 \\
+        Early Fusion BERT+MFCC Retrieval & tag\_overlap & 0.0014 & 0.0030 & 0.0026 & 0.0052 & 91.06 & 9.61 & 171.06 & 36.71 \\
+        Late Fusion MFCC+VGG19 Retrieval & tag\_overlap & 0.0025 & 0.0060 & 0.0066 & 0.0133 & 83.60 & 9.61 & 176.08 & 37.84 \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+\end{landscape}
+
 
 \end{document}
