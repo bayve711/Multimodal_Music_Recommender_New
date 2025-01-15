@@ -10,49 +10,82 @@ This project implements a multimodal music retrieval system using the Music4All-
   - Visual-based (VGG19, ResNet)
   - Tag-based retrieval
   - Multimodal fusion (Early and Late fusion)
-- Web interface for interactive music search
+- Interactive web interface for music search
 - Comprehensive evaluation metrics
 - Support for various similarity measures
 
+## Prerequisites
+
+- Python 3.8 or higher
+- Virtual environment (recommended)
+- Git
+
 ## Installation
 
-1. Create a virtual environment:
+1. Clone the repository:
 ```bash
-python -m venv mmsr_env
+git clone https://github.com/Goldenwert/mmsr_ws24_c.git
+cd mmsr_ws24_c
+```
+
+2. Create and activate a virtual environment:
+```bash
+# Create virtual environment
+python -m venv venv
 
 # Activate the environment
 # On Windows:
-mmsr_env\Scripts\activate
+.\venv\Scripts\activate
 # On macOS/Linux:
-source mmsr_env/bin/activate
+source venv/bin/activate
 ```
 
-2. Install dependencies:
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
+
+4. Download NLTK data (will be done automatically on first run):
+The application will automatically download required NLTK data (punkt and wordnet) on first run.
 
 ## Project Structure
 
 ```
 mmsr_ws24_c/
-├── app.py              # Flask web application
-├── requirements.txt    # Project dependencies
-├── static/            # Static files for web interface
-├── templates/         # HTML templates
-└── name.tex          # Project documentation
+├── app.py                    # Streamlit web application
+├── backend.py               # Core retrieval system logic
+├── filter_tags.py          # Tag processing utilities
+├── requirements.txt        # Project dependencies
+├── evaluation_results/     # Evaluation metrics and results
+├── plots/                  # Generated visualizations
+└── data/                  # Dataset files (not included in repo)
+    ├── id_information_mmsr.tsv
+    ├── id_genres_mmsr.tsv
+    ├── id_metadata_mmsr.tsv
+    ├── id_tags_dict.tsv
+    ├── id_lyrics_tf-idf_mmsr.tsv
+    ├── id_lyrics_bert_mmsr.tsv
+    ├── id_mfcc_bow_mmsr.tsv
+    ├── id_blf_spectralcontrast_mmsr.tsv
+    ├── id_vgg19_mmsr.tsv
+    └── id_resnet_mmsr.tsv
 ```
 
 ## Usage
 
-1. Start the Flask application:
+1. Start the Streamlit application:
 ```bash
-python app.py
+python -m streamlit run app.py
 ```
 
-2. Open a web browser and navigate to `http://localhost:5000`
+2. Open your web browser and navigate to:
+   - Local URL: http://localhost:8501
+   - The Network URL will be displayed in the terminal
 
-3. Select a query song and retrieval methods to find similar tracks
+3. Use the interface to:
+   - Search for tracks by artist and song name
+   - Select different retrieval methods
+   - View similar tracks and their details
 
 ## Retrieval Methods
 
@@ -74,18 +107,33 @@ python app.py
 
 ## Dependencies
 
-- numpy>=1.21.0
-- pandas>=1.3.0
+Major dependencies include:
+- numpy>=1.23.0
+- pandas>=1.4.0
 - scikit-learn>=0.24.2
 - torch>=1.9.0
 - transformers>=4.11.0
+- streamlit>=1.41.0
+- nltk>=3.9.0
 - librosa>=0.8.1
-- pillow>=8.3.1
-- matplotlib>=3.4.3
-- jupyter>=1.0.0
-- flask>=2.0.1
-- scipy>=1.7.1
-- sqlalchemy
+
+For a complete list, see `requirements.txt`
+
+## Troubleshooting
+
+1. If you encounter NLTK data errors:
+```python
+import nltk
+nltk.download('punkt')
+nltk.download('wordnet')
+```
+
+2. If Streamlit is not found after installation:
+```bash
+# Make sure you're in your virtual environment, then:
+python -m pip install --upgrade streamlit
+python -m streamlit run app.py
+```
 
 ## Contributing
 
@@ -99,4 +147,4 @@ python app.py
 
 - Music4All-Onion dataset providers
 - Contributors to the various deep learning models used
-- Flask and other open-source libraries 
+- Streamlit and other open-source libraries 
