@@ -1,5 +1,3 @@
-# app.py
-
 import streamlit as st
 import pandas as pd
 import backend
@@ -8,41 +6,16 @@ from scipy.sparse import hstack
 
 #1.History and Results initialization
 
-# 🚀 Set Streamlit to run on port 8501 (optional, just in case)
-os.system("streamlit run app.py --server.port 8501")
+if __name__ == "__main__":
+    import os
+    os.system("streamlit run app.py --server.port 8501")
 
-# ✅ Lazy load only metadata initially
-@st.cache_data
-def load_metadata():
-    return pd.read_csv("data/id_information_mmsr.tsv", sep="\t")
 
-# ✅ Function to load large datasets only when needed
-def load_large_dataset(filename):
-    return pd.read_csv(filename, sep="\t")
-
-# 🎯 Load only essential metadata first
-metadata_df = load_metadata()
-
-# ✅ Session state initialization
 if 'history' not in st.session_state:
     st.session_state['history'] = []
+
 if 'results' not in st.session_state:
     st.session_state['results'] = {}
-
-# 🎵 App Title
-st.title("Music Information Retrieval System")
-st.markdown("""
-Welcome to the Music Information Retrieval System. Select a track and one or more retrieval systems to discover similar songs.
-""")
-
-# 🎛 Sidebar UI
-st.sidebar.header("Selection Panel")
-
-# ✅ Button to Load Large Data Only When Needed
-if st.sidebar.button("Load Full Data"):
-    with st.spinner("Loading full dataset..."):
-        full_data = load_large_dataset("data/id_resnet_mmsr.tsv")
-        st.dataframe(full_data.head())
 
 #2.Title and Description
 
