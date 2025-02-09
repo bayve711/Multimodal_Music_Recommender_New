@@ -8,6 +8,11 @@ from scipy.sparse import hstack
 
 #1.History and Results initialization
 
+if __name__ == "__main__":
+    import os
+    os.system("streamlit run app.py --server.port 8501")
+
+
 if 'history' not in st.session_state:
     st.session_state['history'] = []
 
