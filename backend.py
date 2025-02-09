@@ -42,6 +42,7 @@ METADATA_FILE = os.path.join(DATA_DIR, 'id_metadata_mmsr.tsv')
 
 # 2. datasets
 
+@st.cache_data
 def load_dataframe(file_path, sep='\t', header='infer', names=None):
     """
     Utility function to load a TSV file into a pandas DataFrame.
@@ -252,6 +253,7 @@ catalog_df_filtered = catalog_df[catalog_df['filtered_processed_tags_final'].app
 
 #10. Tag Vectorization TF-IDF
 
+@st.cache_data
 def vectorize_tags_tfidf(catalog_df, min_df=1, ngram_range=(1, 1)):
     """
     Vectorizes tags using TF-IDF with adjustable n-gram range.
