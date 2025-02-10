@@ -6,10 +6,6 @@ from scipy.sparse import hstack
 
 #1.History and Results initialization
 
-if __name__ == "__main__":
-    import os
-    os.system("streamlit run app.py --server.port 8501")
-
 
 if 'history' not in st.session_state:
     st.session_state['history'] = []
@@ -170,6 +166,13 @@ if st.sidebar.button("Retrieve Results"):
             'results': {k: v.to_dict(orient='records') for k, v in results.items()}
         }
         st.session_state['history'].append(retrieval_record)
+        MAX_HISTORY_LENGTH = 10
+
+# After appending a new record:
+st.session_state['history'].append(retrieval_record)
+if len(st.session_state['history']) > MAX_HISTORY_LENGTH:
+    st.session_state['history'] = st.session_state['history'][-MAX_HISTORY_LENGTH:]
+
 
 #5. sidebar for History Management
 
