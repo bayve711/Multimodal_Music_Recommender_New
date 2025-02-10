@@ -8,7 +8,8 @@ from scipy.sparse import hstack
 
 if __name__ == "__main__":
     import os
-    os.system("streamlit run app.py --server.port 8501")
+    os.system("streamlit run app.py --server.port 8501 --server.fileWatcherType none")
+
 
 
 if 'history' not in st.session_state:
